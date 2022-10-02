@@ -9,16 +9,43 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-body, input, button {
+body, input, button, textarea, select {
     font: 14px Roboto, sans-serif;
 }
 
-#root {
-    max-width: 1020px;
-    margin: 0 auto;
-    padding: 0 20px 50px;
-}
+
 
 button {
     cursor: pointer;
 }
+
+input,textarea, select {
+    width: 100%;
+    padding: 0 1.5rem;
+    height: 4rem;
+    border-radius: 0.25rem;
+    border: 1px solid #d7d7d7;
+    background: #e7e9ee;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #969CB3;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #969CB3;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: #969CB3;
+  }
+
+  textarea{
+    padding-top: 1rem;
+    resize: none;
+    height: 6rem;
+  }
