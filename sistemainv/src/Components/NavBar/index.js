@@ -5,7 +5,7 @@ import {MdPerson} from 'react-icons/md'
 export default function Nav(){
     return(
         <nav>
-            <a><img src={Logo} width="300px"/></a>
+            <a href="/"><img src={Logo} width="300px"/></a>
             <div className='person'>
                 <MdPerson color='white'/>
                 <p>Jhennifer Matias</p>
