@@ -3,9 +3,12 @@ import Nav from "../../Components/NavBar"
 import { MdAddCircle, MdOutlineRemoveRedEye, MdDeleteOutline, MdMode } from 'react-icons/md'
 import './styles.css'
 import swal from 'sweetalert';
-
+import Modal from '@mui/material/modal'
 export default function ItemList() {
     const [close, setClose] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleCloseModal = () => setOpen(false);
 
     const handleClose = () => {
         setClose(true);
@@ -26,7 +29,17 @@ export default function ItemList() {
     };
 
     return (
+
         <div className="item-list-container">
+        
+<Modal
+  open={open}
+  onClose={handleCloseModal}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <div className="modal" >modal</div>
+</Modal>
             <Nav />
             <div className="item-list-content">
                 <div className="item-list-header">
@@ -53,7 +66,7 @@ export default function ItemList() {
                             <td>Local</td>
                             <td>Número cod de Barras</td>
                             <td>
-                                <a href="/itemShow"><MdOutlineRemoveRedEye /></a>
+                                <button onClick={handleOpen}><MdOutlineRemoveRedEye /></button>
                                 <button onClick={handleListItemClick}><MdDeleteOutline /></button>
                                 <a href="/itemEdit"><MdMode /></a>
                             </td>
