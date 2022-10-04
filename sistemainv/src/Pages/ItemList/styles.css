@@ -1,19 +1,21 @@
-.item-list-container{
+.item-list-container {
     width: 100%;
 }
 
-.item-list-content{
+.item-list-content {
     width: 96%;
     margin-left: 2%;
 }
-.item-list-container .item-list-content .item-list-header{
+
+.item-list-container .item-list-content .item-list-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin: 1.5rem;
 }
-.item-list-container .item-list-content .item-list-header a{
+
+.item-list-container .item-list-content .item-list-header a {
     color: white;
     background-color: #008037;
     height: 3rem;
@@ -25,17 +27,17 @@
     justify-content: space-between;
 }
 
-.item-list-container .item-list-content .item-list-header a p{
+.item-list-container .item-list-content .item-list-header a p {
     margin-left: 0.5rem;
 }
 
 
-.item-list-container .item-list-content .item-list-header a:hover{
+.item-list-container .item-list-content .item-list-header a:hover {
     filter: brightness(0.9);
     transition: filter 0.2s;
 }
 
-.item-list-container .item-list-content table{
+.item-list-container .item-list-content table {
     width: 100%;
     border-spacing: 0 0.5rem;
 }
@@ -48,12 +50,22 @@
     padding: 1rem 2rem;
     text-align: left;
     line-height: 1.5rem;
-  }
+}
 
-  .item-list-container .item-list-content td {
+.item-list-container .item-list-content td {
     padding: 1rem 2rem;
     border: 0;
     background-color: white;
     color: black;
     border-radius: 0.25rem;
-  }
+}
+
+.item-list-container .item-list-content td button {
+    border: none;
+    background-color: transparent;
+    color: #008037;
+}
+
+.item-list-container .item-list-content td a {
+    color: #008037;
+}

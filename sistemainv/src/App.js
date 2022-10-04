@@ -13,7 +13,7 @@ function App() {
     <Router>
         <Routes>
           <Route path="/" exeact element={<ItemList/>} />
-          <Route path="/itemdit" element={<ItemEdit/>} />
+          <Route path="/itemEdit" element={<ItemEdit/>} />
           <Route path="/itemCreate" element={<ItemCreate/>} />
           <Route path="/itemShow" element={<ItemShow/>} />
         </Routes>
