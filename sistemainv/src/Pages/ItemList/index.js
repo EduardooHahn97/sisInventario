@@ -5,16 +5,26 @@ import './styles.css'
 import swal from 'sweetalert';
 import Modal from '@mui/material/modal';
 import Logo from '../../assets/logo.png';
+import { useEffect } from "react";
+import api from '../../service/api';
+
 export default function ItemList() {
     const [close, setClose] = React.useState(false);
     const [open, setOpen] = React.useState(false);
+    const [items, setItems] = React.useState([]);
     const handleOpen = () => setOpen(true);
     const handleCloseModal = () => setOpen(false);
+
+
+    useEffect(() => {
+        api.get('items')
+            .then(response => setItems(response.data))
+        console.log(items)
+    }, [])
 
     const handleClose = () => {
         setClose(true);
     };
-
     const handleListItemClick = (value) => {
         setClose(true);
         swal({
@@ -41,16 +51,16 @@ export default function ItemList() {
             >
                 <div className="modal" >
                     <h1>MOUSE</h1>
-                    <p>DESCRIÇÃO: Lorem ipsum dolor sit amet, 
+                    <p>DESCRIÇÃO: Lorem ipsum dolor sit amet,
                         consectetur adipiscing elit. Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit. Sed placerat ut odio ac congue. 
+                        consectetur adipiscing elit. Sed placerat ut odio ac congue.
                         Cras. Sed placerat ut odio ac congue. Cras.
                     </p>
                     <div className="inferior-modal">
                         <div className="info">
                             <p>ESTADO: <MdDone /></p>
                             <p>LOCAL: sala 110 Bloco C - UFSC Araranguá</p>
-                            <MdQrCode size={70}/>
+                            <MdQrCode size={70} />
                         </div>
                         <img src={Logo} />
                     </div>
@@ -74,43 +84,21 @@ export default function ItemList() {
                         </tr>
                     </thead>
                     <tbody>
+                        {items.map((item) => (
+                            <tr key={item.id}>
+                                <td>{item.id}</td>
+                                <td>{item.nome}</td>
+                                <td>{item.estado == 1 ? <MdDone color="green"/>: <MdWarning color="red"/> }</td>
+                                <td>{item.local}</td>
+                                <td>{item.codBarras}</td>
+                                <td>
+                                    <a href="/itemShow"><MdOutlineRemoveRedEye /></a>
+                                    <a href="/itemDelete"><MdDeleteOutline /></a>
+                                    <a href="/itemEdit"><MdMode /></a>
+                                </td>
+                            </tr>
+                        ))}
 
-                        <tr>
-                            <td>id</td>
-                            <td>Nome</td>
-                            <td>Estado</td>
-                            <td>Local</td>
-                            <td>Número cod de Barras</td>
-                            <td>
-                                <button onClick={handleOpen}><MdOutlineRemoveRedEye /></button>
-                                <button onClick={handleListItemClick}><MdDeleteOutline /></button>
-                                <a href="/itemEdit"><MdMode /></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>id</td>
-                            <td>Nome</td>
-                            <td>Estado</td>
-                            <td>Local</td>
-                            <td>Número cod de Barras</td>
-                            <td>
-                                <a href="/itemShow"><MdOutlineRemoveRedEye /></a>
-                                <a href="/itemDelete"><MdDeleteOutline /></a>
-                                <a href="/itemEdit"><MdMode /></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>id</td>
-                            <td>Nome</td>
-                            <td>Estado</td>
-                            <td>Local</td>
-                            <td>Número cod de Barras</td>
-                            <td>
-                                <a href="/itemShow"><MdOutlineRemoveRedEye /></a>
-                                <a href="/itemDelete"><MdDeleteOutline /></a>
-                                <a href="/itemEdit"><MdMode /></a>
-                            </td>
-                        </tr>
                     </tbody>
 
                 </table>
