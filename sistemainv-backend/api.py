@@ -14,7 +14,7 @@ app.add_middleware(
 )
 
 @app.get("/api/items")
-def item():
+def items():
     json = [{
         "id": 1,
         "nome": "Mouse",
@@ -32,4 +32,19 @@ def item():
         "descricao": 'teste 123',
         "imagem": 'link'
     }]
+    return json
+
+
+@app.get("/api/item")
+def item(itemId):
+    json = {
+        "id": 1,
+        "nome": "Mouse",
+        "estado": "1",
+        "local": 'Lab 110 - Jardim das Avenidas - Araranguá',
+        "codBarras": '1212121',
+        "descricao": 'teste 123',
+        "imagem": 'link'
+    }
+    
     return json

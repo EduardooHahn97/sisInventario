@@ -7,6 +7,7 @@ import Modal from '@mui/material/modal';
 import Logo from '../../assets/logo.png';
 import { useEffect } from "react";
 import api from '../../service/api';
+import {Link} from 'react-router-dom';
 
 export default function ItemList() {
     const [close, setClose] = React.useState(false);
@@ -19,13 +20,12 @@ export default function ItemList() {
     useEffect(() => {
         api.get('items')
             .then(response => setItems(response.data))
-        console.log(items)
     }, [])
 
     const handleClose = () => {
         setClose(true);
     };
-    const handleListItemClick = (value) => {
+    const Delete = (value) => {
         setClose(true);
         swal({
             title: "Are you sure?",
@@ -92,9 +92,9 @@ export default function ItemList() {
                                 <td>{item.local}</td>
                                 <td>{item.codBarras}</td>
                                 <td>
-                                    <a href="/itemShow"><MdOutlineRemoveRedEye /></a>
-                                    <a href="/itemDelete"><MdDeleteOutline /></a>
-                                    <a href="/itemEdit"><MdMode /></a>
+                                    <Link onClick={handleOpen}><MdOutlineRemoveRedEye /></Link>
+                                    <a onClick={Delete}><MdDeleteOutline /></a>
+                                    <Link to={`/itemEdit/${item.id}`}><MdMode /></Link>
                                 </td>
                             </tr>
                         ))}
