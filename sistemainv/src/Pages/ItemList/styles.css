@@ -37,6 +37,14 @@
     transition: filter 0.2s;
 }
 
+
+.item-list-container .item-list-content .item-list-header .buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 1rem;
+}
 .item-list-container .item-list-content table {
     width: 100%;
     border-spacing: 0 0.5rem;
@@ -60,14 +68,25 @@
     border-radius: 0.25rem;
 }
 
-.item-list-container .item-list-content td button {
+.item-list-container .item-list-content tr:hover{
+    filter: brightness(0.99);
+    transition: filter 0.2s;
+}
+.item-list-container .item-list-content td a {
     border: none;
     background-color: transparent;
     color: #008037;
 }
 
+
+.item-list-container .item-list-content td a:hover{
+    color: #003f1b;
+    transition: filter 0.2s;
+}
+
 .item-list-container .item-list-content td a {
     color: #008037;
+    font-size: 1.3rem;
 }
 
 .modal {

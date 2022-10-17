@@ -1,7 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+api = APIRouter(prefix='/api')
+app.include_router(api)
 
 origins = ["*"]
 
@@ -26,6 +29,14 @@ def items():
     }, {
         "id": 2,
         "nome": "Teclado",
+        "estado": "0",
+        "local": 'Lab 110 - Jardim das Avenidas - Araranguá',
+        "codBarras": '1212121',
+        "descricao": 'teste 123',
+        "imagem": 'link'
+    }, {
+        "id": 3,
+        "nome": "Monitor",
         "estado": "0",
         "local": 'Lab 110 - Jardim das Avenidas - Araranguá',
         "codBarras": '1212121',

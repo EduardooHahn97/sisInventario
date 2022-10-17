@@ -70,7 +70,11 @@ export default function ItemList() {
             <div className="item-list-content">
                 <div className="item-list-header">
                     <h1>Itens Cadastrados</h1>
-                    <a href="/itemCreate"> <MdAddCircle /> <p>Cadastrar Itens</p></a>
+                    <div className="buttons">
+                        <a href="/itemCreate"> <MdAddCircle size={20}/> <p>Cadastrar Itens</p></a>
+                        <a href="/emprestimoCreate"> <MdAddCircle size={20}/> <p> Cadastrar Emprestimo</p></a>
+                    </div>
+                    
                 </div>
                 <table>
                     <thead>
@@ -88,7 +92,7 @@ export default function ItemList() {
                             <tr key={item.id}>
                                 <td>{item.id}</td>
                                 <td>{item.nome}</td>
-                                <td>{item.estado == 1 ? <MdDone color="green"/>: <MdWarning color="red"/> }</td>
+                                <td>{item.estado == 1 ? <MdDone color="green" size={25  }/>: <MdWarning color="red" size={25}/> }</td>
                                 <td>{item.local}</td>
                                 <td>{item.codBarras}</td>
                                 <td>

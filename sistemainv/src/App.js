@@ -8,6 +8,7 @@ import ItemEdit from './Pages/ItemEdit';
 import Login from './Pages/Login';
 
 import './global.css'
+import FormEmprestimoCreate from './Pages/formEmprestimoCreate/index';
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
           <Route path="/itemEdit/:itemId" element={<ItemEdit/>} />
           <Route path="/itemCreate" element={<ItemCreate/>} />
           <Route path="/login" exeact element={<Login/>} />
+          <Route path="/emprestimoCreate" exeact element={<FormEmprestimoCreate/>} />
         </Routes>
     </Router>
   );
