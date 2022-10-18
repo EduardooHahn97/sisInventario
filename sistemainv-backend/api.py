@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+import conexao
 
 app = FastAPI()
 
@@ -59,3 +60,13 @@ def item(itemId):
     }
     
     return json
+    
+@app.get("/api/users")
+def usuarios():
+    conexao.banco.execute('select * from usuario')
+    teste = []
+    for lin in conexao.banco.fetchall():
+        print("users", lin)
+        teste.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
+    return teste
+
