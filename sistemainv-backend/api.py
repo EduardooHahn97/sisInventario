@@ -16,10 +16,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/api/items")
-def items():
-    json = [{
+'''json = [{
         "id": 1,
         "nome": "Mouse",
         "estado": "1",
@@ -43,30 +40,41 @@ def items():
         "codBarras": '1212121',
         "descricao": 'teste 123',
         "imagem": 'link'
-    }]
-    return json
+    }]'''
+
+@app.get("/api/items")
+def items():
+    conexao.banco.execute('select * from item')
+    itens = []
+    for lin in conexao.banco.fetchall():
+        print("itens", lin)
+        itens.append({'id':lin[0], 'nome': lin[1], 'descricao':lin[2], 'estado':lin[3], 
+                    'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
+    return itens
 
 
 @app.get("/api/item")
 def item(itemId):
-    json = {
-        "id": 1,
-        "nome": "Mouse",
-        "estado": "1",
-        "local": 'Lab 110 - Jardim das Avenidas - Araranguá',
-        "codBarras": '1212121',
-        "descricao": 'teste 123',
-        "imagem": 'link'
-    }
-    
-    return json
+    conexao.banco.execute('select * from item where item.id ='+itemId)
+    itens = []
+    for lin in conexao.banco.fetchall():
+        print("itens", lin)
+        itens.append({'id':lin[0], 'nome': lin[1], 'descricao':lin[2], 'estado':lin[3], 
+                    'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
+    return itens
     
 @app.get("/api/users")
 def usuarios():
     conexao.banco.execute('select * from usuario')
-    teste = []
+    usuarios = []
     for lin in conexao.banco.fetchall():
-        print("users", lin)
-        teste.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
-    return teste
+        usuarios.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
+    return usuarios
 
+@app.get("/api/user")
+def usuarios(userId):
+    conexao.banco.execute('select * from usuario where usuario.id ='+userId)
+    usuarios = []
+    for lin in conexao.banco.fetchall():
+        usuarios.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
+    return usuarios

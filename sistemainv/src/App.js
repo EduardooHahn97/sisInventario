@@ -7,6 +7,8 @@ import ItemCreate from './Pages/ItemCreate';
 import ItemEdit from './Pages/ItemEdit';
 import Login from './Pages/Login';
 import UsuarioList from './Pages/UsuarioList';
+import UsuarioEdit from './Pages/UsuarioEdit';
+import UsuarioCreate from './Pages/UsuarioCreate';
 
 import './global.css'
 import FormEmprestimoCreate from './Pages/formEmprestimoCreate/index';
@@ -20,6 +22,8 @@ function App() {
           <Route path="/login" exeact element={<Login/>} />
           <Route path="/emprestimoCreate" exeact element={<FormEmprestimoCreate/>} />
           <Route path="/usuarioList" exeact element={<UsuarioList/>} />
+          <Route path="/usuarioEdit/:userId" exeact element={<UsuarioEdit/>} />
+          <Route path="/UsuarioCreate" exeact element={<UsuarioCreate/>} />
         </Routes>
     </Router>
   );
