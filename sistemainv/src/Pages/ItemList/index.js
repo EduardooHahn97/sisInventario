@@ -74,6 +74,7 @@ export default function ItemList() {
                         <a href="/itemCreate"> <MdAddCircle size={20}/> <p>Cadastrar Itens</p></a>
                         <a href="/emprestimoCreate"> <MdAddCircle size={20}/> <p> Cadastrar Emprestimo</p></a>
                         <a href="/LocalCreate"> <MdAddCircle size={20}/> <p>Cadastrar Locais</p></a>
+                        <a href="/UsuarioCreate"> <MdAddCircle size={20}/> <p>Cadastrar Usuários</p></a>
                     </div>
                     
                 </div>

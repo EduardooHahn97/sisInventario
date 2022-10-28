@@ -64,6 +64,43 @@ def item(itemId):
         itens.append({'id':lin[0], 'nome': lin[1], 'descricao':lin[2], 'estado':lin[3], 
                     'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
     return itens
+
+@app.post("/api/item")
+def itemCreate(item):
+    sql = 'insert into item (nome, descricao, estadoConservacao, imagem, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %s, %s, %s)'
+    valores = (item.nome,
+                item.descricao,
+                item.estadoConservacao,
+                item.imagem,
+                item.codigoBarras,
+                item.idLocal,
+                item.idUsuario)
+    conexao.banco.execute(sql, valores)
+
+    conexao.banco.commit()
+
+    print(conexao.banco.rowcount, "item inserido.")
+    return True
+
+
+@app.put("/api/item")
+def itemUpdate(item):
+    sql = 'update item set nome=%s, descricao=%s, estadoConservacao=%s, imagem=%s, codigoBarras=%s, idLocal=%s, idUsuario=%s where idItem = %s'
+    #sql = 'insert into item (nome, descricao, estadoConservacao, imagem, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %s, %s, %s)'
+    valores = (item.nome,
+                item.descricao,
+                item.estadoConservacao,
+                item.imagem,
+                item.codigoBarras,
+                item.idLocal,
+                item.idUsuario,
+                item.idItem)
+    conexao.banco.execute(sql, valores)
+
+    conexao.banco.commit()
+
+    print(conexao.banco.rowcount, "item atualizado.")
+    return True
     
 @app.get("/api/users")
 def usuarios():
@@ -81,7 +118,88 @@ def usuarios(userId):
         usuarios.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
     return usuarios
 
+@app.post("/api/user")
+def userCreate(user):
+    print(user)
+    sql = 'insert into usuario (matricula, nome, email, senha, token) values (%s, %s, %s, %s, %s)'
+    valores = (user.matricula,
+                user.nome,
+                user.email,
+                user.senha,
+                user.token)
+    conexao.banco.execute(sql, valores)
 
+    conexao.banco.commit()
+
+    print(conexao.banco.rowcount, "user inserido.")
+    return True
+
+
+@app.put("/api/user")
+def userUpdate(user):
+    print(user)
+    sql = 'update usuario set matricula=%s, nome=%s, email=%s, senha=%s, token=%s where idUsuario=%s'
+    #sql = 'insert into usuario (matricula, nome, email, senha, token) values (%s, %s, %s, %s, %s)'
+    valores = (user.matricula,
+                user.nome,
+                user.email,
+                user.senha,
+                user.token,
+                user.idUsuario)
+    conexao.banco.execute(sql, valores)
+
+    conexao.banco.commit()
+
+    print(conexao.banco.rowcount, "user atualizado.")
+    return True
+
+
+@app.get("/api/local")
+def usuarios():
+    conexao.banco.execute('select * from local')
+    locais = []
+    for lin in conexao.banco.fetchall():
+        locais.append({'id':lin[0], 'sala': lin[1], 'blobo':lin[2], 'campus':lin[3]})
+    return locais
+
+@app.get("/api/local")
+def usuarios(localId):
+    conexao.banco.execute('select * from local where local.id ='+localId)
+    locais = []
+    for lin in conexao.banco.fetchall():
+        locais.append({'id':lin[0], 'sala': lin[1], 'blobo':lin[2], 'campus':lin[3]})
+    return locais
+
+@app.post("/api/local")
+def localCreate(local):
+    sql = 'insert into local (sala, bloco, campus) values (%s, %s, %s, %s, %s)'
+    valores = (local.sala,
+                local.bloco,
+                local.campus)
+    conexao.banco.execute(sql, valores)
+
+    conexao.banco.commit()
+
+    print(conexao.banco.rowcount, "local inserido.")
+    return True
+
+
+@app.put("/api/local")
+def localUpdate(local):
+    sql = 'update local set sala=%s, bloco=%s, campus=%s where idLocal=%s'
+    #sql = 'insert into local (sala, bloco, campus) values (%s, %s, %s, %s, %s)'
+    valores = (local.sala,
+                local.bloco,
+                local.campus,
+                local.idLocal)
+    conexao.banco.execute(sql, valores)
+
+    conexao.banco.commit()
+
+    print(conexao.banco.rowcount, "local atualizado.")
+    return True
+
+@app.post("/api/importArquivo")
 def importArquivos(arq):
     print(arq)
     '''colunas = ['idItem', 'prefixo', 'patrimonio', 'codBarras', 'controle', 'material', 'situacao', 'valor', 'nada', 'nada2']
