@@ -2,17 +2,22 @@ import './styles.css'
 import Nav from '../../Components/NavBar'
 import { useState } from 'react'
 import api from '../../service/api'
-
+import Swal from 'sweetalert'
 export default function ItemCreate(){
     const [nome, setNome] = useState('')
     const [descricao, setDescricao] = useState('')
     const [estadoConservacao, setConservacao] = useState('')
     const [imagem, setImagem] = useState('')
     const [idLocal, setIdLocal] = useState('')
+    const successToast = () => Swal({
+        text: 'Sucesso ao cadastrar',
+        position: 'center-end',
+        toast:true
+      });
 
-
-    const handleClick = (e) => {
+    const handleSubmit = async (e) => {
         //console.log(nome + ' - '+ matricula + ' - '+ email + ' - '+ senha);
+        e.preventDefault();
         var item = {
             nome: nome,
             descricao: descricao,
@@ -22,15 +27,19 @@ export default function ItemCreate(){
             idLocal: 1,
             idUsuario: 1,
         };
-        console.log(item)
-        api.post('itemCreate', item)
+        await api.post('itemCreate', item)
+        .then(successToast)
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     return(
         <div className="container-item-create">
+            
+           
             <Nav />
-
-            <form className="form-item-create">
+            <form className="form-item-create" onSubmit={handleSubmit}>
                 <h1>Criar Item</h1>
                 <input 
                     type="text" 
@@ -70,7 +79,7 @@ export default function ItemCreate(){
                     value={idLocal} 
                     onChange={(e) => setIdLocal(e.target.value)}
                 </select>
-                <button onClick={handleClick}>Criar item</button>
+                <button type="submit">Criar item</button>
             </form>
         </div>
     )

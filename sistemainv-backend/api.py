@@ -2,8 +2,6 @@ from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import conexao
-import pandas as pd
-import numpy as np
 
 app = FastAPI()
 
@@ -11,19 +9,6 @@ api = APIRouter(prefix='/api')
 app.include_router(api)
 
 origins = ["*"]
-
-class Item(BaseModel):
-    nome: str
-    descricao: str 
-    # | None = Field(
-    #     default=None, title="The description of the item", max_length=300
-    # )
-    estadoConservacao: str
-    imagem: str
-    codigoBarras: int
-    idLocal: int
-    idUsuario: int
-
 
 
 app.add_middleware(
@@ -33,31 +18,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-'''json = [{
-        "id": 1,
-        "nome": "Mouse",
-        "estado": "1",
-        "local": 'Lab 110 - Jardim das Avenidas - Araranguá',
-        "codBarras": '1212121',
-        "descricao": 'teste 123',
-        "imagem": 'link'
-    }, {
-        "id": 2,
-        "nome": "Teclado",
-        "estado": "0",
-        "local": 'Lab 110 - Jardim das Avenidas - Araranguá',
-        "codBarras": '1212121',
-        "descricao": 'teste 123',
-        "imagem": 'link'
-    }, {
-        "id": 3,
-        "nome": "Monitor",
-        "estado": "0",
-        "local": 'Lab 110 - Jardim das Avenidas - Araranguá',
-        "codBarras": '1212121',
-        "descricao": 'teste 123',
-        "imagem": 'link'
-    }]'''
+
 
 @app.get("/api/items")
 def items():
@@ -80,9 +41,19 @@ def item(itemId):
                     'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
     return itens
 
+class Item(BaseModel):
+    nome: str
+    descricao: str
+    estadoConservacao:str
+    imagem: str
+    codigoBarras: str
+    idLocal: str
+    idUsuario: str
+
 @app.post("/api/itemCreate")
-def itemCreate(item):
-    sql = 'insert into item (nome, descricao, estadoConservacao, imagem, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %d, %d, %d)'
+def itemCreate(item: Item):
+    sql = 'insert into item (nome, descricao, estadoConservacao, imagem, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %s, %s, %s)'
+    print(item.nome)
     valores = (item.nome,
                 item.descricao,
                 item.estadoConservacao,

@@ -2,17 +2,26 @@ import './styles.css'
 import Nav from '../../Components/NavBar'
 import { useState } from 'react'
 import api from '../../service/api';
-
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function ItemEdit(){
-    const [nome, setNome] = useState('')
+    const [item, setItem] = useState([])
+    const [nome, setNome] = useState(item[0]? item[0].nome : '')
     const [descricao, setDescricao] = useState('')
     const [consevacao, setConversavacao] = useState('')
     const [imagem, setImagem] = useState('')
     const [local, setLocal] = useState('')
+    let { id } = useParams();
+
+    useEffect(() => {
+        api.get('item?itemId='+id)
+            .then(response => setItem(response.data))
+        console.log(item)
+    }, [item])
 
     const handleClick = (e) => {
-        //console.log(nome + ' - '+ matricula + ' - '+ email + ' - '+ senha);
+        
         var item = {
             nome: nome,
             descricao: descricao,

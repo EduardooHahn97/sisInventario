@@ -22,7 +22,7 @@ function App() {
     <Router>
         <Routes>
           <Route path="/" exeact element={<ItemList/>} />
-          <Route path="/itemEdit/:itemId" element={<ItemEdit/>} />
+          <Route path="/itemEdit/:id" element={<ItemEdit/>} />
           <Route path="/itemCreate" element={<ItemCreate/>} />
           <Route path="/login" exeact element={<Login/>} />
           <Route path="/emprestimoCreate" exeact element={<FormEmprestimoCreate/>} />
