@@ -6,9 +6,9 @@ import api from '../../service/api'
 export default function ItemCreate(){
     const [nome, setNome] = useState('')
     const [descricao, setDescricao] = useState('')
-    const [consevacao, setConversavacao] = useState('')
+    const [estadoConservacao, setConservacao] = useState('')
     const [imagem, setImagem] = useState('')
-    const [local, setLocal] = useState('')
+    const [idLocal, setIdLocal] = useState('')
 
 
     const handleClick = (e) => {
@@ -16,12 +16,14 @@ export default function ItemCreate(){
         var item = {
             nome: nome,
             descricao: descricao,
-            consevacao: consevacao,
+            estadoConservacao: estadoConservacao,
             imagem: imagem,
-            local: local
+            codigoBarras: 111221,
+            idLocal: 1,
+            idUsuario: 1,
         };
         console.log(item)
-        api.post('item', item)
+        api.post('itemCreate', item)
     }
 
     return(
@@ -49,12 +51,12 @@ export default function ItemCreate(){
                     <option value="" data-default disabled selected>Selecione o estado de Conservação</option>
                     <option>Bom</option>
                     <option>Ruim</option>
-                    value={consevacao} 
-                    onChange={(e) => setConversavacao(e.target.value)}
+                    value={estadoConservacao} 
+                    onChange={(e) => setConservacao(e.target.value)}
                 </select>
                 
                 <input 
-                    type="file" 
+                    type="text" 
                     placeholder="imagem"
                     required
                     value={imagem} 
@@ -65,8 +67,8 @@ export default function ItemCreate(){
                     <option value="" data-default disabled selected>Selecione o Local</option>
                     <option>Local 1</option>
                     <option>Local 2</option>
-                    value={local} 
-                    onChange={(e) => setLocal(e.target.value)}
+                    value={idLocal} 
+                    onChange={(e) => setIdLocal(e.target.value)}
                 </select>
                 <button onClick={handleClick}>Criar item</button>
             </form>

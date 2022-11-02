@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
 import conexao
 import pandas as pd
 import numpy as np
@@ -10,6 +11,20 @@ api = APIRouter(prefix='/api')
 app.include_router(api)
 
 origins = ["*"]
+
+class Item(BaseModel):
+    nome: str
+    descricao: str 
+    # | None = Field(
+    #     default=None, title="The description of the item", max_length=300
+    # )
+    estadoConservacao: str
+    imagem: str
+    codigoBarras: int
+    idLocal: int
+    idUsuario: int
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -57,7 +72,7 @@ def items():
 
 @app.get("/api/item")
 def item(itemId):
-    conexao.banco.execute('select * from item where item.id ='+itemId)
+    conexao.banco.execute('select * from item where item.idItem ='+itemId)
     itens = []
     for lin in conexao.banco.fetchall():
         print("itens", lin)
@@ -65,9 +80,9 @@ def item(itemId):
                     'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
     return itens
 
-@app.post("/api/item")
+@app.post("/api/itemCreate")
 def itemCreate(item):
-    sql = 'insert into item (nome, descricao, estadoConservacao, imagem, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %s, %s, %s)'
+    sql = 'insert into item (nome, descricao, estadoConservacao, imagem, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %d, %d, %d)'
     valores = (item.nome,
                 item.descricao,
                 item.estadoConservacao,
@@ -77,7 +92,7 @@ def itemCreate(item):
                 item.idUsuario)
     conexao.banco.execute(sql, valores)
 
-    conexao.banco.commit()
+    conexao.conn.commit()
 
     print(conexao.banco.rowcount, "item inserido.")
     return True
@@ -97,7 +112,7 @@ def itemUpdate(item):
                 item.idItem)
     conexao.banco.execute(sql, valores)
 
-    conexao.banco.commit()
+    conexao.conn.commit()
 
     print(conexao.banco.rowcount, "item atualizado.")
     return True
@@ -111,7 +126,7 @@ def usuarios():
     return usuarios
 
 @app.get("/api/user")
-def usuarios(userId):
+def usuario(userId):
     conexao.banco.execute('select * from usuario where usuario.id ='+userId)
     usuarios = []
     for lin in conexao.banco.fetchall():
@@ -129,7 +144,7 @@ def userCreate(user):
                 user.token)
     conexao.banco.execute(sql, valores)
 
-    conexao.banco.commit()
+    conexao.conn.commit()
 
     print(conexao.banco.rowcount, "user inserido.")
     return True
@@ -148,14 +163,14 @@ def userUpdate(user):
                 user.idUsuario)
     conexao.banco.execute(sql, valores)
 
-    conexao.banco.commit()
+    conexao.conn.commit()
 
     print(conexao.banco.rowcount, "user atualizado.")
     return True
 
 
 @app.get("/api/local")
-def usuarios():
+def locals():
     conexao.banco.execute('select * from local')
     locais = []
     for lin in conexao.banco.fetchall():
@@ -163,7 +178,7 @@ def usuarios():
     return locais
 
 @app.get("/api/local")
-def usuarios(localId):
+def local(localId):
     conexao.banco.execute('select * from local where local.id ='+localId)
     locais = []
     for lin in conexao.banco.fetchall():
@@ -178,7 +193,7 @@ def localCreate(local):
                 local.campus)
     conexao.banco.execute(sql, valores)
 
-    conexao.banco.commit()
+    conexao.conn.commit()
 
     print(conexao.banco.rowcount, "local inserido.")
     return True
@@ -194,7 +209,7 @@ def localUpdate(local):
                 local.idLocal)
     conexao.banco.execute(sql, valores)
 
-    conexao.banco.commit()
+    conexao.conn.commit()
 
     print(conexao.banco.rowcount, "local atualizado.")
     return True
