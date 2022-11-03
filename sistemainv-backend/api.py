@@ -140,12 +140,12 @@ def userUpdate(user):
     return True
 
 
-@app.get("/api/local")
-def locals():
+@app.get("/api/locais")
+def locais():
     conexao.banco.execute('select * from local')
     locais = []
     for lin in conexao.banco.fetchall():
-        locais.append({'id':lin[0], 'sala': lin[1], 'blobo':lin[2], 'campus':lin[3]})
+        locais.append({'idLocal':lin[0], 'sala': lin[1], 'bloco':lin[2], 'campus':lin[3]})
     return locais
 
 @app.get("/api/local")
