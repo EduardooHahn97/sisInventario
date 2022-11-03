@@ -1,6 +1,6 @@
 import './styles.css'
 import Nav from '../../Components/NavBar'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import api from '../../service/api'
 import Swal from 'sweetalert'
 export default function ItemCreate(){
@@ -9,11 +9,13 @@ export default function ItemCreate(){
     const [estadoConservacao, setConservacao] = useState('')
     const [imagem, setImagem] = useState('')
     const [idLocal, setIdLocal] = useState('')
+    //todo - o botão OK do toastify vai pra direita em alguns casos
     const successToast = () => Swal({
         text: 'Sucesso ao cadastrar',
         position: 'center-end',
         toast:true
       });
+    const [allIdLocais, setAllIdLocais] = useState('')
 
     const handleSubmit = async (e) => {
         //console.log(nome + ' - '+ matricula + ' - '+ email + ' - '+ senha);
@@ -24,7 +26,7 @@ export default function ItemCreate(){
             estadoConservacao: estadoConservacao,
             imagem: imagem,
             codigoBarras: 111221,
-            idLocal: 1,
+            idLocal: idLocal,
             idUsuario: 1,
         };
         await api.post('itemCreate', item)
@@ -33,6 +35,25 @@ export default function ItemCreate(){
             console.log(err)
         })
     }
+    const fetchAllLocais = async (x) => {
+        const locaisList = [];
+        let data;
+        x = await api.get('locais')
+            .then((response) => {
+                response.data.forEach((element) => {
+                    locaisList.push(element.idLocal);
+                })
+            })
+            .catch((err) => {
+                console.log("itemCreate -> fetchAllLocais -> err", x);
+                console.log(err);
+            })
+        setAllIdLocais(locaisList);  
+    }
+
+    useEffect(() => {
+        fetchAllLocais();
+    }, []);
 
     return(
         <div className="container-item-create">
@@ -61,7 +82,7 @@ export default function ItemCreate(){
                     <option>Bom</option>
                     <option>Ruim</option>
                     value={estadoConservacao} 
-                    onChange={(e) => setConservacao(e.target.value)}
+                    onChange={(e) => setConservacao(e.target.selected)}
                 </select>
                 
                 <input 
@@ -72,12 +93,13 @@ export default function ItemCreate(){
                     onChange={(e) => setImagem(e.target.value)}
                 />
 
-                <select>
+                <select onChange={(e) => setIdLocal(e.target.value)} value={idLocal}>
                     <option value="" data-default disabled selected>Selecione o Local</option>
-                    <option>Local 1</option>
-                    <option>Local 2</option>
-                    value={idLocal} 
-                    onChange={(e) => setIdLocal(e.target.value)}
+                    {
+                    Array.from(allIdLocais).map((element, index) => {
+                        return(<option key={index}>{element}</option>);
+                        }
+                    )}
                 </select>
                 <button type="submit">Criar item</button>
             </form>
