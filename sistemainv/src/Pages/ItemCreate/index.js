@@ -82,7 +82,7 @@ export default function ItemCreate(){
                     <option>Bom</option>
                     <option>Ruim</option>
                     value={estadoConservacao} 
-                    onChange={(e) => setConservacao(e.target.selected)}
+                    onChange={(e) => setConservacao(e.target.value)}
                 </select>
                 
                 <input 
