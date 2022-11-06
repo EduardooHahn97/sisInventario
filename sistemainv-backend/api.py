@@ -137,7 +137,7 @@ def userUpdate(user):
 
 @app.delete("/api/user")
 def user_delete(userId):
-    conexao.banco.execute('delete from usuario where item.idItem ='+userId)
+    conexao.banco.execute('delete from usuario where usuario.idUsuario ='+userId)
     conexao.conn.commit()
     ## fazer verificacao de erro 
     return True

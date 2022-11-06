@@ -19,7 +19,6 @@ export default function ItemCreate(){
     const [allIdLocais, setAllIdLocais] = useState('')
 
     const handleSubmit = async (e) => {
-        //console.log(nome + ' - '+ matricula + ' - '+ email + ' - '+ senha);
         e.preventDefault();
         var item = {
             nome: nome,
