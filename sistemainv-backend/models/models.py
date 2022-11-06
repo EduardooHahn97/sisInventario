@@ -8,3 +8,10 @@ class Item(BaseModel):
     codigoBarras: str
     idLocal: str
     idUsuario: str
+
+class User(BaseModel):
+    nome: str
+    email: str
+    senha:str
+    matricula: str
+    token: str 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
-from models.Item import Item
+from models.models import Item, User
 app = FastAPI()
 
 api = APIRouter(prefix='/api')
@@ -102,8 +102,7 @@ def usuario(userId):
     return usuarios
 
 @app.post("/api/user")
-def userCreate(user):
-    print(user)
+def userCreate(user: User):
     sql = 'insert into usuario (matricula, nome, email, senha, token) values (%s, %s, %s, %s, %s)'
     valores = (user.matricula,
                 user.nome,

@@ -2,7 +2,8 @@ import './styles.css'
 import Nav from '../../Components/NavBar'
 import React, { useState, useEffect } from 'react'
 import api from '../../service/api'
-import Swal from 'sweetalert'
+import Swal from 'sweetalert';
+
 export default function ItemCreate(){
     const [nome, setNome] = useState('')
     const [descricao, setDescricao] = useState('')

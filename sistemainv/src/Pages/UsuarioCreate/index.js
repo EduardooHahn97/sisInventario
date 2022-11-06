@@ -1,33 +1,44 @@
-import './styles.css'
-import Nav from '../../Components/NavBar'
+import './styles.css';
+import Nav from '../../Components/NavBar';
 import api from '../../service/api';
 import { useState } from 'react';
+import Swal from 'sweetalert';
 
 export default function UsuarioCreate(){
+    const [nome, setNome] = useState('');
+    const [matricula, setMatricula] = useState('');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
 
-    const [nome, setNome] = useState('')
-    const [matricula, setMatricula] = useState('')
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
+    const successToast = () => {Swal({
+        text: 'Sucesso ao cadastrar',
+        position: 'center-end',
+        toast:true
+      })
+      window.location.href = '/usuarioHome'
+    };
 
-
-    const handleClick = (e) => {
-        //console.log(nome + ' - '+ matricula + ' - '+ email + ' - '+ senha);
+    const handleSubmit = (e) => {
+        e.preventDefault();
         var user = {
             nome: nome,
             matricula: matricula,
             email: email,
-            senha: senha
+            senha: senha,
+            token: 0, 
         };
-        console.log(user)
-        api.post('users', user)
+        api.post('user', user)
+        .then(successToast)
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     return(
         <div className="container-user-create">
             <Nav />
 
-            <form className="form-user-create">
+            <form className="form-user-create" onSubmit={handleSubmit}>
                 <h1>Cadastrar Usuário</h1>
                 <input 
                     
@@ -60,7 +71,7 @@ export default function UsuarioCreate(){
                     value={senha} 
                     onChange={(e) => setSenha(e.target.value)}
                 />
-                <button onClick={handleClick}>Criar Usuário</button>
+                <button type='submit'>Criar Usuário</button>
             </form>
         </div>
     )
