@@ -3,7 +3,7 @@ import Nav from '../../Components/NavBar'
 import api from '../../service/api';
 import { useState } from 'react';
 
-export default function UsuarioEdit(){
+export default function UsuarioCreate(){
 
     const [nome, setNome] = useState('')
     const [matricula, setMatricula] = useState('')

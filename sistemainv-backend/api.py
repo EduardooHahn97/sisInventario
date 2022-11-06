@@ -1,8 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
 import conexao
-
+from models.Item import Item
 app = FastAPI()
 
 api = APIRouter(prefix='/api')
@@ -20,23 +19,21 @@ app.add_middleware(
 )
 
 
+
 @app.get("/api/items")
 def items():
     conexao.banco.execute('select * from item')
     itens = []
     for lin in conexao.banco.fetchall():
-        print("itens", lin)
         itens.append({'id':lin[0], 'nome': lin[1], 'descricao':lin[2], 'estado':lin[3], 
                     'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
     return itens
-
 
 @app.get("/api/item")
 def item(itemId):
     conexao.banco.execute('select * from item where item.idItem ='+itemId)
     itens = []
     for lin in conexao.banco.fetchall():
-        print("itens", lin)
         itens.append({'id':lin[0], 'nome': lin[1], 'descricao':lin[2], 'estado':lin[3], 
                     'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
     return itens
@@ -49,14 +46,6 @@ def item_delete(itemId):
     ## fazer verificacao de erro 
     return True
 
-class Item(BaseModel):
-    nome: str
-    descricao: str
-    estadoConservacao:str
-    imagem: str
-    codigoBarras: str
-    idLocal: str
-    idUsuario: str
 
 @app.post("/api/itemCreate")
 def itemCreate(item: Item):
@@ -145,6 +134,13 @@ def userUpdate(user):
     conexao.conn.commit()
 
     print(conexao.banco.rowcount, "user atualizado.")
+    return True
+
+@app.delete("/api/user")
+def user_delete(userId):
+    conexao.banco.execute('delete from usuario where item.idItem ='+userId)
+    conexao.conn.commit()
+    ## fazer verificacao de erro 
     return True
 
 

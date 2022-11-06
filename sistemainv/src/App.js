@@ -13,6 +13,7 @@ import ImportArquivo from './Pages/ImportArquivo';
 import LocalList from './Pages/LocalList';
 import LocalEdit from './Pages/LocalEdit';
 import LocalCreate from './Pages/LocalCreate';
+import UsuarioHome from './Pages/UsuarioHome';
 import BarCode from './Pages/BarCode';
 
 import './global.css'
@@ -26,6 +27,8 @@ function App() {
           <Route path="/itemCreate" element={<ItemCreate/>} />
           <Route path="/login" exeact element={<Login/>} />
           <Route path="/emprestimoCreate" exeact element={<FormEmprestimoCreate/>} />
+          
+          <Route path="/usuarioHome" exeact element={<UsuarioHome/>} />
           <Route path="/usuarioList" exeact element={<UsuarioList/>} />
           <Route path="/usuarioEdit/:userId" exeact element={<UsuarioEdit/>} />
           <Route path="/UsuarioCreate" exeact element={<UsuarioCreate/>} />

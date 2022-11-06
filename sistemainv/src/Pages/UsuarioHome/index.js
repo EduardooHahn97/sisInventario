@@ -8,12 +8,12 @@ import { useEffect } from "react";
 import api from '../../service/api';
 import {Link} from 'react-router-dom';
 
-export default function ItemList() {
+export default function UserHome() {
     const [close, setClose] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [deleteItem, setDeleteItem] = React.useState(false);
-    const [items, setItems] = React.useState([]);
-    const [item, setItem] = React.useState([
+    const [deleteUser, setDeleteUser] = React.useState(false);
+    const [users, setUsers] = React.useState([]);
+    const [user, setUser] = React.useState([
         {
             "id": 1,
             "nome": "mouse",
@@ -28,14 +28,14 @@ export default function ItemList() {
     
     const handleOpen = (id) => {
         setOpen(true);
-        api.get('item?itemId='+id).then((response)=>setItem(response.data))
-        console.log(item)
+        api.get('user?userId='+id).then((response)=>setUser(response.data))
+        console.log(user)
     };
     const handleCloseModal = () => setOpen(false);
 
     useEffect(() => {
-        api.get('items')
-            .then(response => setItems(response.data))
+        api.get('users')
+            .then(response => setUsers(response.data))
     }, [])
 
     const handleClose = () => {
@@ -56,18 +56,18 @@ export default function ItemList() {
     };
 
     const deleteApi = (id)=>{
-        setDeleteItem(true)
-        api.delete('item?itemId='+id)
+        setDeleteUser(true)
+        api.delete('user?userId='+id)
         .then(
             ()=>{
-                console.log(items)
-                setItems(items.filter(item => item.id != id))
+                console.log(users)
+                setUsers(users.filter(user => user.id != id))
             })
     }
 
     return (
 
-        <div className="item-list-container">
+        <div className="user-list-container">
 
             <Modal
                 open={open}
@@ -76,54 +76,49 @@ export default function ItemList() {
                 aria-describedby="modal-modal-description"
             >
                 <div className="modal" >
-                    <h1>{item[0].nome}</h1>
-                    <p>DESCRIÇÃO: {item[0].descricao}
+                    <h1>{user[0].nome}</h1>
+                    <p>DESCRIÇÃO: {user[0].descricao}
                     </p>
                     <div className="inferior-modal">
                         <div className="info">
-                            <p>ESTADO: {item[0].estado == 1 ? <MdDone /> : <MdWarning /> }</p>
-                            <p>LOCAL: {item[0].local}</p>
-                            <p>NÚMERO DE CÓDIGOS DE BARRAS: {item[0].codBarras} </p>
+                            <p>ESTADO: {user[0].estado == 1 ? <MdDone /> : <MdWarning /> }</p>
+                            <p>LOCAL: {user[0].local}</p>
+                            <p>NÚMERO DE CÓDIGOS DE BARRAS: {user[0].codBarras} </p>
                         </div>
-                        <img src={item[0].imagem} />
+                        <img src={user[0].imagem} />
                     </div>
                 </div>
             </Modal>
             <Nav />
-            <div className="item-list-content">
-                <div className="item-list-header">
-                    <h1>Itens Cadastrados</h1>
-                    <div className="buttons">
-                        <a href="/itemCreate"> <MdAddCircle size={20}/> <p>Cadastrar Itens</p></a>
-                        <a href="/emprestimoCreate"> <MdAddCircle size={20}/> <p> Cadastrar Emprestimo</p></a>
-                        <a href="/LocalCreate"> <MdAddCircle size={20}/> <p>Cadastrar Locais</p></a>
-                        <a href="/UsuarioHome"> <MdAddCircle size={20}/>Administrar Usuários</a>
+            <div className="user-list-content">
+                <div className="user-list-header">
+                    <h1>Usuários Cadastrados</h1>
+                    <div className="buttons">   
+                        <a href="/UsuarioCreate"> <MdAddCircle size={20}/> <p>Cadastrar Usuários</p></a>
+                        
+                        <a href="/"> <p>Home</p></a>
                     </div>
                     
                 </div>
                 <table>
                     <thead>
                         <tr>
-                            <th>id</th>
+                            <th>Matricula</th>
                             <th>Nome</th>
-                            <th>Estado</th>
-                            <th>Local</th>
-                            <th>Número cod de Barras</th>
+                            <th>Email</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.id}</td>
-                                <td>{item.nome}</td>
-                                <td>{item.estado == 1 ? <MdDone color="green" size={25  }/>: <MdWarning color="red" size={25}/> }</td>
-                                <td>{item.local}</td>
-                                <td>{item.codBarras}</td>
+                        {users.map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.matricula}</td>
+                                <td>{user.nome}</td>
+                                <td>{user.email}</td>
                                 <td>
-                                    <Link onClick={()=>handleOpen(item.id)}><MdOutlineRemoveRedEye /></Link>
-                                    <a onClick={()=>Delete(item.id)}><MdDeleteOutline /></a>
-                                    <Link to={`/itemEdit/${item.id}`}><MdMode /></Link>
+                                    <Link onClick={()=>handleOpen(user.id)}><MdOutlineRemoveRedEye /></Link>
+                                    <a onClick={()=>Delete(user.id)}><MdDeleteOutline /></a>
+                                    <Link to={`/userEdit/${user.id}`}><MdMode /></Link>
                                 </td>
                             </tr>
                         ))}
