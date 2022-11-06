@@ -85,7 +85,7 @@ export default function ItemList() {
                             <p>LOCAL: {item[0].local}</p>
                             <p>NÚMERO DE CÓDIGOS DE BARRAS: {item[0].codBarras} </p>
                         </div>
-                        <img src={item[0].imagem} />
+                        <img src={item[0].imagem}  />
                     </div>
                 </div>
             </Modal>
@@ -97,7 +97,7 @@ export default function ItemList() {
                         <a href="/itemCreate"> <MdAddCircle size={20}/> <p>Cadastrar Itens</p></a>
                         <a href="/emprestimoCreate"> <MdAddCircle size={20}/> <p> Cadastrar Emprestimo</p></a>
                         <a href="/LocalCreate"> <MdAddCircle size={20}/> <p>Cadastrar Locais</p></a>
-                        <a href="/UsuarioHome"> <MdAddCircle size={20}/>Administrar Usuários</a>
+                        <a href="/UsuarioHome"> Administrar usuários</a>
                     </div>
                     
                 </div>

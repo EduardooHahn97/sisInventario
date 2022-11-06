@@ -11,11 +11,19 @@ export default function ItemCreate(){
     const [imagem, setImagem] = useState('')
     const [idLocal, setIdLocal] = useState('')
     //todo - o botão OK do toastify vai pra direita em alguns casos
-    const successToast = () => Swal({
-        text: 'Sucesso ao cadastrar',
-        position: 'center-end',
-        toast:true
-      });
+    const successToast = () => {
+        Swal({
+            text: 'Sucesso ao cadastrar',
+            position: 'center-end',
+            toast:true
+        })
+        setNome('');
+        setDescricao('');
+        setConservacao('');
+        setImagem('');
+        setIdLocal('');
+    };
+    
     const [allIdLocais, setAllIdLocais] = useState('')
 
     const handleSubmit = async (e) => {

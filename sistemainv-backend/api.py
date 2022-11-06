@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
-from models.models import Item, User
+from models.models import Item, User, ItemId
 app = FastAPI()
 
 api = APIRouter(prefix='/api')
@@ -67,7 +67,7 @@ def itemCreate(item: Item):
 
 
 @app.put("/api/item")
-def itemUpdate(item):
+def itemUpdate(item: ItemId):
     sql = 'update item set nome=%s, descricao=%s, estadoConservacao=%s, imagem=%s, codigoBarras=%s, idLocal=%s, idUsuario=%s where idItem = %s'
     #sql = 'insert into item (nome, descricao, estadoConservacao, imagem, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %s, %s, %s)'
     valores = (item.nome,
