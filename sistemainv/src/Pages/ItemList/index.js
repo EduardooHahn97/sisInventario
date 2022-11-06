@@ -4,7 +4,6 @@ import { MdAddCircle, MdOutlineRemoveRedEye, MdDeleteOutline, MdMode, MdDone, Md
 import './styles.css'
 import swal from 'sweetalert';
 import Modal from '@mui/material/modal';
-import Logo from '../../assets/logo.png';
 import { useEffect } from "react";
 import api from '../../service/api';
 import {Link} from 'react-router-dom';
@@ -12,6 +11,7 @@ import {Link} from 'react-router-dom';
 export default function ItemList() {
     const [close, setClose] = React.useState(false);
     const [open, setOpen] = React.useState(false);
+    const [deleteItem, setDeleteItem] = React.useState(false);
     const [items, setItems] = React.useState([]);
     const [item, setItem] = React.useState([
         {
@@ -33,7 +33,6 @@ export default function ItemList() {
     };
     const handleCloseModal = () => setOpen(false);
 
-
     useEffect(() => {
         api.get('items')
             .then(response => setItems(response.data))
@@ -43,8 +42,9 @@ export default function ItemList() {
         setClose(true);
     };
 
-    const Delete = (value) => {
+    const Delete = (id) => {
         setClose(true);
+        console.log(id)
         swal({
             title: "Are you sure?",
             text: "Once deleted, you will not be able to recover this!",
@@ -52,10 +52,18 @@ export default function ItemList() {
             buttons: true,
             dangerMode: true,
         })
-            .then((willDelete) => {
-                console.log(willDelete)
-            })
+            .then(deleteApi(id))
     };
+
+    const deleteApi = (id)=>{
+        setDeleteItem(true)
+        api.delete('item?itemId='+id)
+        .then(
+            ()=>{
+                console.log(items)
+                setItems(items.filter(item => item.id != id))
+            })
+    }
 
     return (
 
@@ -114,7 +122,7 @@ export default function ItemList() {
                                 <td>{item.codBarras}</td>
                                 <td>
                                     <Link onClick={()=>handleOpen(item.id)}><MdOutlineRemoveRedEye /></Link>
-                                    <a onClick={Delete}><MdDeleteOutline /></a>
+                                    <a onClick={()=>Delete(item.id)}><MdDeleteOutline /></a>
                                     <Link to={`/itemEdit/${item.id}`}><MdMode /></Link>
                                 </td>
                             </tr>

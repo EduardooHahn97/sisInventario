@@ -41,6 +41,14 @@ def item(itemId):
                     'imagem':lin[4], 'codBarras':lin[5], 'local':lin[6], 'usuario':lin[7]})
     return itens
 
+
+@app.delete("/api/item")
+def item_delete(itemId):
+    conexao.banco.execute('delete from item where item.idItem ='+itemId)
+    conexao.conn.commit()
+    ## fazer verificacao de erro 
+    return True
+
 class Item(BaseModel):
     nome: str
     descricao: str
