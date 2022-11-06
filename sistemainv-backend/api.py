@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
-from models.models import Item, User, ItemId
+from models.models import Item, User, ItemId, UserId, Login
 app = FastAPI()
 
 api = APIRouter(prefix='/api')
@@ -95,11 +95,12 @@ def usuarios():
 
 @app.get("/api/user")
 def usuario(userId):
-    conexao.banco.execute('select * from usuario where usuario.id ='+userId)
+    conexao.banco.execute('select * from usuario where usuario.idUsuario ='+userId)
     usuarios = []
     for lin in conexao.banco.fetchall():
         usuarios.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
     return usuarios
+
 
 @app.post("/api/user")
 def userCreate(user: User):
@@ -118,15 +119,12 @@ def userCreate(user: User):
 
 
 @app.put("/api/user")
-def userUpdate(user):
+def userUpdate(user: UserId):
     print(user)
-    sql = 'update usuario set matricula=%s, nome=%s, email=%s, senha=%s, token=%s where idUsuario=%s'
-    #sql = 'insert into usuario (matricula, nome, email, senha, token) values (%s, %s, %s, %s, %s)'
+    sql = 'update usuario set matricula=%s, nome=%s, email=%s where usuario.idUsuario=%s'
     valores = (user.matricula,
                 user.nome,
                 user.email,
-                user.senha,
-                user.token,
                 user.idUsuario)
     conexao.banco.execute(sql, valores)
 
@@ -142,6 +140,13 @@ def user_delete(userId):
     ## fazer verificacao de erro 
     return True
 
+@app.get("/api/login")
+def login(login:Login):
+    conexao.banco.execute('select * from usuario where email ='+login.email + 'senha =' + login.senha)
+    usuarios = []
+    for lin in conexao.banco.fetchall():
+        usuarios.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
+    return usuarios
 
 @app.get("/api/locais")
 def locais():

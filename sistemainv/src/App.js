@@ -34,7 +34,7 @@ function App() {
           <Route path="/UsuarioCreate" exeact element={<UsuarioCreate/>} />
           <Route path="/ImportArquivo" exeact element={<ImportArquivo/>} />
           <Route path="/LocalList" exeact element={<LocalList/>} />
-          <Route path="/LocalEdit/:userId" exeact element={<LocalEdit/>} />
+          <Route path="/LocalEdit/:localId" exeact element={<LocalEdit/>} />
           <Route path="/BarCode" exeact element={<BarCode/>} />
         </Routes>
     </Router>

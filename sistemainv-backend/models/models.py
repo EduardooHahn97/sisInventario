@@ -7,8 +7,8 @@ class Item(BaseModel):
     estadoConservacao:str
     imagem: Optional[str] = None
     codigoBarras: str
-    idLocal: str
-    idUsuario: str
+    idLocal: int
+    idUsuario: int
 
 
 class ItemId(BaseModel):
@@ -27,3 +27,16 @@ class User(BaseModel):
     senha:str
     matricula: str
     token: str 
+
+class UserId(BaseModel):
+    nome: str
+    email: str
+    senha: Optional[str]
+    matricula: str
+    token: Optional[str] 
+    idUsuario: int
+
+
+class Login(BaseModel):
+    email: str
+    senha: str
