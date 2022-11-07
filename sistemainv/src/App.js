@@ -19,6 +19,7 @@ import BarCode from './Pages/BarCode';
 import './global.css'
 import FormEmprestimoCreate from './Pages/formEmprestimoCreate/index';
 import LocalHome from './Pages/LocalHome/index';
+
 function App() {
   return (
     <Router>

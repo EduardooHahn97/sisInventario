@@ -9,6 +9,7 @@ import api from '../../service/api';
 import {Link} from 'react-router-dom';
 
 export default function ItemList() {
+    const [authenticated, setAuthenticated] = React.useState(false);
     const [close, setClose] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [deleteItem, setDeleteItem] = React.useState(false);
@@ -63,7 +64,6 @@ export default function ItemList() {
                 setItems(items.filter(item => item.id != id))
             })
     }
-
     return (
 
         <div className="item-list-container">
