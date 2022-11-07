@@ -24,3 +24,20 @@ nav .person{
 nav .person p{
     margin-left: 0.5rem;
 }
+nav .logout{
+    display: flex;
+    color: #fff;
+    background-color: #008037;
+    text-decoration: none;
+    margin: 5px;
+    padding: 10px;
+    border:none;
+}
+nav .logout:hover{
+    display: flex;
+    color: #008037;
+    background-color: #fff;
+    text-decoration: none;
+    margin: 5px;
+    padding: 10px;
+}
