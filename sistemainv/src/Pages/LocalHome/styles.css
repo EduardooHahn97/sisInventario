@@ -1,21 +1,21 @@
-.user-list-container {
+.local-list-container {
     width: 100%;
 }
 
-.user-list-content {
+.local-list-content {
     width: 96%;
     margin-left: 2%;
 }
 
-.user-list-container .user-list-content .user-list-header {
+.local-list-container .local-list-content .local-list-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-users: center;
+    align-locals: center;
     margin: 1.5rem;
 }
 
-.user-list-container .user-list-content .user-list-header a {
+.local-list-container .local-list-content .local-list-header a {
     color: white;
     background-color: #008037;
     height: 3rem;
@@ -23,36 +23,36 @@
     text-decoration: none;
     display: flex;
     flex-direction: row;
-    align-users: center;
+    align-locals: center;
     justify-content: space-between;
 }
 
-.user-list-container .user-list-content .user-list-header a p {
+.local-list-container .local-list-content .local-list-header a p {
     margin-left: 0.5rem;
 }
 
 
-.user-list-container .user-list-content .user-list-header a:hover {
+.local-list-container .local-list-content .local-list-header a:hover {
     filter: brightness(0.9);
     transition: filter 0.2s;
 }
 
 
-.user-list-container .user-list-content .user-list-header .buttons{
+.local-list-container .local-list-content .local-list-header .buttons{
     display: flex;
-    align-users: center;
+    align-locals: center;
     justify-content: center;
     flex-direction: row;
     gap: 1rem;
 }
-.user-list-container .user-list-content table {
+.local-list-container .local-list-content table {
     width: 100%;
     border-spacing: 0 0.5rem;
 }
 
 
 
-.user-list-container .user-list-content th {
+.local-list-container .local-list-content th {
     color: gray;
     font-weight: 400;
     padding: 1rem 2rem;
@@ -60,7 +60,7 @@
     line-height: 1.5rem;
 }
 
-.user-list-container .user-list-content td {
+.local-list-container .local-list-content td {
     padding: 1rem 2rem;
     border: 0;
     background-color: white;
@@ -68,23 +68,23 @@
     border-radius: 0.25rem;
 }
 
-.user-list-container .user-list-content tr:hover{
+.local-list-container .local-list-content tr:hover{
     filter: brightness(0.99);
     transition: filter 0.2s;
 }
-.user-list-container .user-list-content td a {
+.local-list-container .local-list-content td a {
     border: none;
     background-color: transparent;
     color: #008037;
 }
 
 
-.user-list-container .user-list-content td a:hover{
+.local-list-container .local-list-content td a:hover{
     color: #003f1b;
     transition: filter 0.2s;
 }
 
-.user-list-container .user-list-content td a {
+.local-list-container .local-list-content td a {
     color: #008037;
     font-size: 1.3rem;
 }

@@ -44,7 +44,6 @@ export default function ItemList() {
 
     const Delete = (id) => {
         setClose(true);
-        console.log(id)
         swal({
             title: "Are you sure?",
             text: "Once deleted, you will not be able to recover this!",
@@ -96,8 +95,8 @@ export default function ItemList() {
                     <div className="buttons">
                         <a href="/itemCreate"> <MdAddCircle size={20}/> <p>Cadastrar Itens</p></a>
                         <a href="/emprestimoCreate"> <MdAddCircle size={20}/> <p> Cadastrar Emprestimo</p></a>
-                        <a href="/LocalCreate"> <MdAddCircle size={20}/> <p>Cadastrar Locais</p></a>
-                        <a href="/UsuarioHome"> Administrar usuários</a>
+                        <a href="/LocalHome">Locais</a>
+                        <a href="/UsuarioHome">Usuários</a>
                     </div>
                     
                 </div>

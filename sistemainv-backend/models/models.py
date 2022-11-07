@@ -40,3 +40,16 @@ class UserId(BaseModel):
 class Login(BaseModel):
     email: str
     senha: str
+
+
+class Local(BaseModel):
+    sala: str
+    bloco: str
+    campus: str
+
+
+class LocalId(BaseModel):
+    sala: str
+    bloco: str
+    campus: str
+    idLocal: int

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
-from models.models import Item, User, ItemId, UserId, Login
+from models.models import Item, User, ItemId, UserId, Login, Local, LocalId
 app = FastAPI()
 
 api = APIRouter(prefix='/api')
@@ -164,15 +164,15 @@ def locais():
 
 @app.get("/api/local")
 def local(localId):
-    conexao.banco.execute('select * from local where local.id ='+localId)
+    conexao.banco.execute('select * from local where local.idLocal ='+localId)
     locais = []
     for lin in conexao.banco.fetchall():
-        locais.append({'id':lin[0], 'sala': lin[1], 'blobo':lin[2], 'campus':lin[3]})
+        locais.append({'id':lin[0], 'sala': lin[1], 'bloco':lin[2], 'campus':lin[3]})
     return locais
 
 @app.post("/api/local")
-def localCreate(local):
-    sql = 'insert into local (sala, bloco, campus) values (%s, %s, %s, %s, %s)'
+def localCreate(local: Local):
+    sql = 'insert into local (sala, bloco, campus) values (%s, %s, %s)'
     valores = (local.sala,
                 local.bloco,
                 local.campus)
@@ -185,7 +185,7 @@ def localCreate(local):
 
 
 @app.put("/api/local")
-def localUpdate(local):
+def localUpdate(local:LocalId):
     sql = 'update local set sala=%s, bloco=%s, campus=%s where idLocal=%s'
     #sql = 'insert into local (sala, bloco, campus) values (%s, %s, %s, %s, %s)'
     valores = (local.sala,
@@ -197,6 +197,14 @@ def localUpdate(local):
     conexao.conn.commit()
 
     print(conexao.banco.rowcount, "local atualizado.")
+    return True
+
+
+@app.delete("/api/local")
+def local_delete(localId):
+    conexao.banco.execute('delete from local where local.idLocal =' + localId)
+    conexao.conn.commit()
+    ## fazer verificacao de erro 
     return True
 
 @app.post("/api/importArquivo")
