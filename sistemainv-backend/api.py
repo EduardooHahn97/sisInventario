@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
 from models.models import Item, User, ItemId, UserId, Login
@@ -140,14 +140,20 @@ def user_delete(userId):
     ## fazer verificacao de erro 
     return True
 
-@app.get("/api/login")
+@app.post("/api/login")
 def login(login:Login):
-    conexao.banco.execute('select * from usuario where email ='+login.email + 'senha =' + login.senha)
+    query = 'select * from usuario where email ="'+login.email + '" and senha ="' + login.senha + '"'
+    print(query)
+    conexao.banco.execute(query)
     usuarios = []
     for lin in conexao.banco.fetchall():
         usuarios.append({'id':lin[0], 'nome': lin[2], 'matricula':lin[1], 'email':lin[3]})
-    return usuarios
+    
+    if usuarios == []: 
+        raise HTTPException(status_code=404, detail="Item not found")
 
+    return usuarios
+    
 @app.get("/api/locais")
 def locais():
     conexao.banco.execute('select * from local')

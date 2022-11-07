@@ -1,15 +1,30 @@
 import './styles.css';
 import login from '../../assets/login.png';
-import logo from '../../assets/logoWhite.png';
 import { useState } from 'react';
+import api from '../../service/api';
+import Swal from 'sweetalert';
 
 export default function Login(){
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
 
+    const errorToast = () => {
+        Swal({
+            text: 'Erro ao logar',
+            position: 'center-end',
+            toast:true
+        })
+    };
+
     const handleSubmit = (e)=>{
         e.preventDefault();
-    
+        api.post('/login', {email, senha}).then(
+            res=>{
+                console.log(res)
+                localStorage.setItem("usuarioLogado", JSON.stringify(res.data[0]))
+                window.location.href = '/';
+            }
+        ).catch(errorToast)
     }
 
     return(
@@ -25,12 +40,16 @@ export default function Login(){
                     type="email" 
                     placeholder="Email"
                     required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 
                 <input 
                     type="password" 
                     placeholder="Senha"
                     required
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
                 />
                 
                 
