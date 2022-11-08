@@ -208,45 +208,79 @@ def local_delete(localId):
     return True
 
 @app.post("/api/importArquivo")
-def importArquivos(arq):
+def importArquivos(arq, tipoArquivo):
+    #tipoArquivo 0 - arquivo de professor(varios locias) 
+    #tipoArquivo 1 - arquivo de um local 
     print(arq)
-    '''colunas = ['idItem', 'prefixo', 'patrimonio', 'codBarras', 'controle', 'material', 'situacao', 'valor', 'nada', 'nada2']
+    if (tipoArquivo == 0):
+        '''colunas = ['idItem', 'prefixo', 'patrimonio', 'codBarras', 'controle', 'material', 'situacao', 'valor', 'nada', 'nada2']
 
-    arquivo = pd.read_excel('inv.xlsx',header = None, names=colunas)
-    
-    obj = []
-    local = 'teste'
-    for i in range(len(arquivo)):
-        linha = arquivo.loc[i]
-        x = str(linha['material']).split('-')
-        desc = ''
-        for i in range(len(x)-1):
-            desc = desc +'-' +x[i+1] 
+        arquivo = pd.read_excel('inv.xlsx',header = None, names=colunas)
         
-        if(type(linha['idItem']) == str):
-            if 'Orgao:' in linha['idItem']:
-                p = str(linha['idItem']).split('Orgao:')
-                l = str(p[1]).split('Funcionario:')
-                
-            if 'Setor:' in linha['idItem'] and ('Edificac;ao:' in linha['idItem'] or 'Edificac,ao:' in linha['idItem'] ) and 'Ambiente:' in linha['idItem']:
-                j = str(linha['idItem']).split('Setor:')
-                seto = str(j[1]).split('Edificac;ao:')
-                if len(seto) < 2:
-                    seto = str(j[1]).split('Edificac,ao:')
-                setor = seto[0]
-                e = str(linha['idItem']).split('Edificac;ao:')
-                if len(e) < 2:
-                    e = str(linha['idItem']).split('Edificac,ao:')
-                edifica = str(e[1]).split('Ambiente:')
-                edificacao = edifica[0]
-                a = str(linha['idItem']).split('Ambiente:')
-                amb = a[1]
-                
-                local = setor + ' - ' +edificacao + ' - ' + amb  
-        
-        if(type(linha['idItem']) == int):
-            obj.append({'nome':x[0], 'descricao': desc,'codigoBarras': linha['codBarras'], 
-                    'local':local, 'valor':linha['valor'],'patrimonio':linha['patrimonio']})
+        obj = []
+        local = 'teste'
+        for i in range(len(arquivo)):
+            linha = arquivo.loc[i]
+            x = str(linha['material']).split('-')
+            desc = ''
+            for i in range(len(x)-1):
+                desc = desc +'-' +x[i+1] 
+            
+            if(type(linha['idItem']) == str):
+                if 'Orgao:' in linha['idItem']:
+                    p = str(linha['idItem']).split('Orgao:')
+                    l = str(p[1]).split('Funcionario:')
+                    
+                if 'Setor:' in linha['idItem'] and ('Edificac;ao:' in linha['idItem'] or 'Edificac,ao:' in linha['idItem'] ) and 'Ambiente:' in linha['idItem']:
+                    j = str(linha['idItem']).split('Setor:')
+                    seto = str(j[1]).split('Edificac;ao:')
+                    if len(seto) < 2:
+                        seto = str(j[1]).split('Edificac,ao:')
+                    setor = seto[0]
+                    e = str(linha['idItem']).split('Edificac;ao:')
+                    if len(e) < 2:
+                        e = str(linha['idItem']).split('Edificac,ao:')
+                    edifica = str(e[1]).split('Ambiente:')
+                    edificacao = edifica[0]
+                    a = str(linha['idItem']).split('Ambiente:')
+                    amb = a[1]
+                    
+                    local = setor + ' - ' +edificacao + ' - ' + amb  
+            
+            if(type(linha['idItem']) == int):
+                obj.append({'nome':x[0], 'descricao': desc,'codigoBarras': linha['codBarras'], 
+                        'local':local, 'valor':linha['valor'],'patrimonio':linha['patrimonio']})
 
-    print(obj)'''
-    
+        print(obj)'''
+    elif (tipoArquivo == 1):
+        #colunas
+        '''colunas = ['patrimonio', 'controle', 'codBarras', 'serie', 'descricao', 'conservacao', 'incorporacao', 'transferencia','nan', 'valor', 'situacao']
+
+        arquivo = pd.read_excel('ivent.xlsx',header = None, names=colunas)
+
+        arquivo.pop('nan')
+        arquivo
+        obj = []
+        local = 'teste'
+        for i in range(len(arquivo)):
+            linha = arquivo.loc[i]
+            if(type(linha['patrimonio']) == str):
+                if('Edificac;ao:' in linha['patrimonio'] or 'Edificac,ao:' in linha['patrimonio'] or 'Edificação:' in linha['patrimonio']):
+                    x = str(linha['patrimonio']).split('Edificação:')
+                    edificacao = str(x[1]).split('Setor:')
+                    setor = str(y[1]).split('Ambiente:')
+                    ambiente = str(z[1]).split('Situação:')
+                    local = setor[0] + ' - ' +edificacao[0] + ' - ' + ambiente[0]
+                    print(local)
+                    
+                
+            #['patrimonio', 'controle', 'codBarras', 'serie', 'descricao', 'conservacao', 
+            #'incorporacao', 'transferencia','nan', 'valor', 'situacao']
+            if(type(linha['patrimonio']) == int):
+                x = str(linha['descricao']).split('-')
+                obj.append({'nome':x[0], 'descricao': linha['descricao'],'codigoBarras': linha['codBarras'], 
+                        'local':local, 'valor':linha['valor'],'patrimonio':linha['patrimonio']})
+
+        print(obj)   '''
+    else:
+        print("Tipo do arquivo nao identificado")
