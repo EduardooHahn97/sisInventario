@@ -8,13 +8,13 @@ import { useEffect } from "react";
 import api from '../../service/api';
 import {Link} from 'react-router-dom';
 
-export default function ItemList() {
+export default function EmprestimoList() {
     const [authenticated, setAuthenticated] = React.useState(false);
     const [close, setClose] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [deleteItem, setDeleteItem] = React.useState(false);
-    const [items, setItems] = React.useState([]);
-    const [item, setItem] = React.useState([
+    const [deleteEmprestimo, setDeleteEmprestimo] = React.useState(false);
+    const [emprestimos, setEmprestimos] = React.useState([]);
+    const [emprestimo, setEmprestimo] = React.useState([
         {
             "id": 1,
             "nome": "mouse",
@@ -29,14 +29,14 @@ export default function ItemList() {
     
     const handleOpen = (id) => {
         setOpen(true);
-        api.get('item?itemId='+id).then((response)=>setItem(response.data))
-        console.log(item)
+        api.get('emprestimo?emprestimoId='+id).then((response)=>setEmprestimo(response.data))
+        console.log(emprestimo)
     };
     const handleCloseModal = () => setOpen(false);
 
     useEffect(() => {
-        api.get('items')
-            .then(response => setItems(response.data))
+        api.get('emprestimos')
+            .then(response => setEmprestimos(response.data))
     }, [])
 
     const handleClose = () => {
@@ -54,49 +54,26 @@ export default function ItemList() {
         })
             .then(deleteApi(id))
     };
-
+    console.log(emprestimos[0])
     const deleteApi = (id)=>{
-        setDeleteItem(true)
-        api.delete('item?itemId='+id)
+        setDeleteEmprestimo(true)
+        api.delete('emprestimo?emprestimoId='+id)
         .then(
             ()=>{
-                console.log(items)
-                setItems(items.filter(item => item.id != id))
+                console.log(emprestimos)
+                setEmprestimos(emprestimos.filter(emprestimo => emprestimo.id != id))
             })
     }
     return (
 
-        <div className="item-list-container">
-
-            <Modal
-                open={open}
-                onClose={handleCloseModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <div className="modal" >
-                    <h1>{item[0].nome}</h1>
-                    <p>DESCRIÇÃO: {item[0].descricao}
-                    </p>
-                    <div className="inferior-modal">
-                        <div className="info">
-                            <p>ESTADO: {item[0].estado == 1 ? <MdDone /> : <MdWarning /> }</p>
-                            <p>LOCAL: {item[0].local}</p>
-                            <p>NÚMERO DE CÓDIGOS DE BARRAS: {item[0].codBarras} </p>
-                        </div>
-                        <img src={item[0].imagem}  />
-                    </div>
-                </div>
-            </Modal>
+        <div className="emprestimo-list-container">
             <Nav />
-            <div className="item-list-content">
-                <div className="item-list-header">
-                    <h1>Itens Cadastrados</h1>
+            <div className="emprestimo-list-content">
+                <div className="emprestimo-list-header">
+                    <h1>Emprestimos Cadastrados</h1>
                     <div className="buttons">
-                        <a href="/itemCreate"> <MdAddCircle size={20}/> <p>Cadastrar Itens</p></a>
-                        <a href="/emprestimoList">Emprestimos</a>
-                        <a href="/LocalHome">Locais</a>
-                        <a href="/UsuarioHome">Usuários</a>
+                        <a href="/emprestimoCreate"> <MdAddCircle size={20}/> <p> Cadastrar Emprestimo</p></a>
+                        <a href="/">Home</a>
                     </div>
                     
                 </div>
@@ -104,25 +81,27 @@ export default function ItemList() {
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>Nome</th>
-                            <th>Estado</th>
-                            <th>Local</th>
-                            <th>Número cod de Barras</th>
+                            <th>Usuario</th>
+                            <th>Item</th>
+                            <th>Data Retirada</th>
+                            <th>Data Devolução</th>
+                            <th>Observação</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.id}</td>
-                                <td>{item.nome}</td>
-                                <td>{item.estado == 1 ? <MdDone color="green" size={25  }/>: <MdWarning color="red" size={25}/> }</td>
-                                <td>{item.local}</td>
-                                <td>{item.codBarras}</td>
+                        {emprestimos.map((emprestimo) => (
+                            <tr key={emprestimo.idEmprestimo}>
+                                <td>{emprestimo.idEmprestimo}</td>
+                                <td>{emprestimo.usuarioInfos['2']}</td>
+                                <td>{emprestimo.itemInfos['1']}</td>
+                                <td>{emprestimo.dataRetirada}</td>
+                                <td>{emprestimo.dataDevolucao}</td>
+                                <td>{emprestimo.observacao}</td>
                                 <td>
-                                    <Link onClick={()=>handleOpen(item.id)}><MdOutlineRemoveRedEye /></Link>
-                                    <a onClick={()=>Delete(item.id)}><MdDeleteOutline /></a>
-                                    <Link to={`/itemEdit/${item.id}`}><MdMode /></Link>
+                                    <Link onClick={()=>handleOpen(emprestimo.id)}><MdOutlineRemoveRedEye /></Link>
+                                    <a onClick={()=>Delete(emprestimo.id)}><MdDeleteOutline /></a>
+                                    <Link to={`/emprestimoEdit/${emprestimo.id}`}><MdMode /></Link>
                                 </td>
                             </tr>
                         ))}

@@ -17,7 +17,9 @@ import UsuarioHome from './Pages/UsuarioHome';
 import BarCode from './Pages/BarCode';
 
 import './global.css'
-import FormEmprestimoCreate from './Pages/formEmprestimoCreate/index';
+import EmprestimoCreate from './Pages/EmprestimoCreate/index';
+import EmprestimoList from './Pages/EmprestimoList/index';
+
 import LocalHome from './Pages/LocalHome/index';
 
 function App() {
@@ -39,8 +41,11 @@ function App() {
           <Route path="/LocalEdit/:localId" exeact element={<LocalEdit/>} />
           <Route path="/LocalCreate" exeact element={<LocalCreate/>} />
           
+          
+          <Route path="/emprestimoCreate" exeact element={<EmprestimoCreate/>} />
+          <Route path="/emprestimoList" exeact element={<EmprestimoList/>} />
+          
           <Route path="/login" exeact element={<Login/>} />
-          <Route path="/emprestimoCreate" exeact element={<FormEmprestimoCreate/>} />
           <Route path="/ImportArquivo" exeact element={<ImportArquivo/>} />
           <Route path="/BarCode" exeact element={<BarCode/>} />
         </Routes>

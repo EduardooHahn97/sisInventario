@@ -208,12 +208,16 @@ def local_delete(localId):
     ## fazer verificacao de erro 
     return True
 
-@app.get("/api/emprestimo")
+@app.get("/api/emprestimos")
 def emprestimo():
     conexao.banco.execute('select * from emprestimo')
     locais = []
     for lin in conexao.banco.fetchall():
-        locais.append({'idEmprestimo':lin[0], 'idUsuario':lin[1], 'idItem': lin[2], 'dataRetirada':lin[3], 'dataDevolucao':lin[4], 'observacao':lin[5]})
+        conexao.banco.execute('select * from item where idItem= ' +str(lin[2]))
+        item = conexao.banco.fetchone()
+        conexao.banco.execute('select * from usuario where idUsuario= ' +str(lin[1]))
+        usuario = conexao.banco.fetchone()
+        locais.append({'idEmprestimo':lin[0], 'usuarioInfos':usuario, 'itemInfos': item, 'dataRetirada':lin[3], 'dataDevolucao':lin[4], 'observacao':lin[5]})
     return locais
 
 
@@ -229,6 +233,13 @@ def emprestimoCreate(emprestimo: Emprestimo):
     conexao.conn.commit()
 
     print(conexao.banco.rowcount, "emprestimo inserido.")
+    return True
+
+@app.delete("/api/emprestimo")
+def emprestimo_delete(EmprestimoId):
+    conexao.banco.execute('delete from emprestimo where idEmprestimo =' + EmprestimoId)
+    conexao.conn.commit()
+    ## fazer verificacao de erro 
     return True
 
 
