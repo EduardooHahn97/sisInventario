@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from  typing import Optional
+from datetime import datetime
 
 class Item(BaseModel):
     nome: str
@@ -53,3 +54,10 @@ class LocalId(BaseModel):
     bloco: str
     campus: str
     idLocal: int
+
+
+class Emprestimo(BaseModel):
+    idUsuario: int
+    idItem: int
+    dataRetirada: datetime
+    observacao: str

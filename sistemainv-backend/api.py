@@ -1,7 +1,8 @@
 from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
-from models.models import Item, User, ItemId, UserId, Login, Local, LocalId
+from models.models import Item, User, ItemId, UserId, Login, Local, LocalId, Emprestimo
+from datetime import datetime
 app = FastAPI()
 
 api = APIRouter(prefix='/api')
@@ -206,6 +207,30 @@ def local_delete(localId):
     conexao.conn.commit()
     ## fazer verificacao de erro 
     return True
+
+@app.get("/api/emprestimo")
+def emprestimo():
+    conexao.banco.execute('select * from emprestimo')
+    locais = []
+    for lin in conexao.banco.fetchall():
+        locais.append({'idEmprestimo':lin[0], 'idUsuario':lin[1], 'idItem': lin[2], 'dataRetirada':lin[3], 'dataDevolucao':lin[4], 'observacao':lin[5]})
+    return locais
+
+
+@app.post("/api/emprestimo")
+def emprestimoCreate(emprestimo: Emprestimo):
+    sql = 'insert into emprestimo (idUsuario, idItem, dataRetirada, observacao) values (%s, %s, %s, %s)'
+    valores = (emprestimo.idUsuario,
+                emprestimo.idItem,
+                datetime.now(),
+                emprestimo.observacao)
+    conexao.banco.execute(sql, valores)
+
+    conexao.conn.commit()
+
+    print(conexao.banco.rowcount, "emprestimo inserido.")
+    return True
+
 
 @app.post("/api/importArquivo")
 def importArquivos(arq, tipoArquivo):
