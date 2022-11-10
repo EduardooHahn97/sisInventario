@@ -3,8 +3,6 @@ import Nav from '../../Components/NavBar'
 import React, { useState, useEffect } from 'react'
 import api from '../../service/api'
 import Swal from 'sweetalert';
-import Scanner from '../BarCode/scanner'
-import ImportArquivo from '../BarCode';
 
 export default function ItemCreate(){
     const [nome, setNome] = useState('')
@@ -13,15 +11,6 @@ export default function ItemCreate(){
     const [imagem, setImagem] = useState('')
     const [idLocal, setIdLocal] = useState('')
     const [idUsuario, setIdUsuario] = useState('')
-    const [codigoBarras, setCodBarra] = useState('')
-    const [camera, setCamera] = useState(false)
-    const [result, setResult] = useState(null)
-  
-    const onDetected = result => {
-        console.log(result);
-        setResult(result);
-        setCodBarra(result);
-    };
     //todo - o botão OK do toastify vai pra direita em alguns casos
     const successToast = () => {
         Swal({
@@ -45,7 +34,7 @@ export default function ItemCreate(){
             descricao: descricao,
             estadoConservacao: estadoConservacao,
             imagem: imagem,
-            codigoBarras: codigoBarras,
+            codigoBarras: 111221,
             idLocal: idLocal,
             idUsuario: idUsuario,
         };
@@ -79,6 +68,7 @@ export default function ItemCreate(){
     }
     useEffect(() => {
         fetchAllLocais();
+        fetchCurrentUser();
     }, []);
 
     return(
@@ -117,21 +107,7 @@ export default function ItemCreate(){
                     value={imagem} 
                     onChange={(e) => setImagem(e.target.value)}
                 />
-                {
-                    // Iniciando teste com código de barras
-                    // Known issues: ao clicar em "Stop" o sistema tenta enviar o forms na mesma hora
-                    // Estourando int
-                }
-                <div className="App">
-                    <p>{result ? result : "Scanning..."}</p>
-                    <button onClick={() => setCamera(!camera)}>
-                        {camera ? "Stop" : "Start"}
-                    </button>
-                    <div className="container">
-                        {camera && <Scanner onDetected={onDetected} />}
-                    </div>
-                </div>
-                
+
                 <select onChange={(e) => setIdLocal(e.target.value)} value={idLocal}>
                     <option value="" data-default disabled defaultValue={'Selecione o Local'}>Selecione o Local</option>
                     {
