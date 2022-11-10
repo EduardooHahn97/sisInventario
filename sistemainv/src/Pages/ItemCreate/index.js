@@ -79,7 +79,6 @@ export default function ItemCreate(){
     }
     useEffect(() => {
         fetchAllLocais();
-        fetchCurrentUser();
     }, []);
 
     return(
