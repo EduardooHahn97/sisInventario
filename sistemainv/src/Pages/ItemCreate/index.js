@@ -47,7 +47,7 @@ export default function ItemCreate(){
             imagem: imagem,
             codigoBarras: codigoBarras,
             idLocal: idLocal,
-            idUsuario: idUsuario,
+            idUsuario: 1,
         };
         await api.post('itemCreate', item)
         .then(successToast)
@@ -70,16 +70,9 @@ export default function ItemCreate(){
             })
         setAllIdLocais(locaisList);  
     }
-    const fetchCurrentUser = async(x) => {
-        const userInfo = localStorage.getItem("usuarioLogado");
-        const userData = JSON.parse(userInfo);
-        if(userData.id) {
-            setIdUsuario(userData.id);
-        }
-    }
+
     useEffect(() => {
         fetchAllLocais();
-        fetchCurrentUser();
     }, []);
 
     return(
@@ -104,17 +97,18 @@ export default function ItemCreate(){
                     onChange={(e) => setDescricao(e.target.value)}
                 ></textarea>
 
-                <select placeholder="Estado de Conservação" value={estadoConservacao} onChange={(e) => setConservacao(e.target.value)}>
-                    <option value="" data-default disabled defaultValue={'Selecione o estado de Conservação'}>Selecione o estado de Conservação</option>
+                <select placeholder="Estado de Conservação">
+                    <option value="" data-default disabled selected>Selecione o estado de Conservação</option>
                     <option>Bom</option>
                     <option>Ruim</option>
+                    value={estadoConservacao} 
+                    onChange={(e) => setConservacao(e.target.value)}
                 </select>
                 
                 <input 
-                    type="file" 
-                    placeholder="Anexar Imagem"
+                    type="text" 
+                    placeholder="imagem"
                     required
-                    accept="image/png, image/jpeg, image/jpg"
                     value={imagem} 
                     onChange={(e) => setImagem(e.target.value)}
                 />
@@ -134,7 +128,7 @@ export default function ItemCreate(){
                 </div>
                 
                 <select onChange={(e) => setIdLocal(e.target.value)} value={idLocal}>
-                    <option value="" data-default disabled defaultValue={'Selecione o Local'}>Selecione o Local</option>
+                    <option value="" data-default disabled selected>Selecione o Local</option>
                     {
                     Array.from(allIdLocais).map((element, index) => {
                         return(<option key={index}>{element}</option>);
