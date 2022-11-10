@@ -12,6 +12,16 @@ export default function ItemCreate(){
     const [estadoConservacao, setConservacao] = useState('')
     const [imagem, setImagem] = useState('')
     const [idLocal, setIdLocal] = useState('')
+    const [idUsuario, setIdUsuario] = useState('')
+    const [codigoBarras, setCodBarra] = useState('')
+    const [camera, setCamera] = useState(false)
+    const [result, setResult] = useState(null)
+  
+    const onDetected = result => {
+        console.log(result);
+        setResult(result);
+        setCodBarra(result);
+    };
     //todo - o botão OK do toastify vai pra direita em alguns casos
     const successToast = () => {
         Swal({
