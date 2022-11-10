@@ -1,7 +1,6 @@
 import Logo from '../../assets/logoWhite.png'
 import './styles.css'
 import {MdPerson} from 'react-icons/md'
-import {Navigate} from 'react-router-dom';
 import { useEffect } from 'react';
 
 export default function Nav(){
@@ -12,7 +11,6 @@ export default function Nav(){
         if(data.nome == '' || data.matricula == '' || data.email == ''){
             console.log("not authenticated");
             window.location.href = '/login';
-            //<Navigate replace to="/login" />;
         }
     }
 
@@ -20,7 +18,6 @@ export default function Nav(){
         e.preventDefault();
         window.location.href = '/login';
         localStorage.setItem("usuarioLogado", '');
-        
     }
 
     useEffect(() => {
@@ -32,7 +29,7 @@ export default function Nav(){
             <div className='person'>
                 <MdPerson color='white'/>
                 <p>{data.nome}</p>
-                <button onClick={handleClick} class="logout">Logout</button>
+                <button onClick={handleClick} className="logout">Logout</button>
             </div>
             
         </nav>

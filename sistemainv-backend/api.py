@@ -1,8 +1,9 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
 from models.models import Item, User, ItemId, UserId, Login, Local, LocalId, Emprestimo
 from datetime import datetime
+
 app = FastAPI()
 
 api = APIRouter(prefix='/api')
@@ -46,7 +47,6 @@ def item_delete(itemId):
     conexao.conn.commit()
     ## fazer verificacao de erro 
     return True
-
 
 @app.post("/api/itemCreate")
 def itemCreate(item: Item):
