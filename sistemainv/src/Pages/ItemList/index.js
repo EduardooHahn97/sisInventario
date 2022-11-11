@@ -26,7 +26,8 @@ export default function ItemList() {
             "usuario": 1
         }
     ])
-    
+    const estadoConservacaoOk = ['Bom', '1', 'Encontrado'];
+
     const handleOpen = (id) => {
         setOpen(true);
         api.get('item?itemId='+id).then((response)=>setItem(response.data))
@@ -61,7 +62,7 @@ export default function ItemList() {
         .then(
             ()=>{
                 console.log(items)
-                setItems(items.filter(item => item.id != id))
+                setItems(items.filter(item => item.id !== id))
             })
     }
     return (
@@ -80,7 +81,7 @@ export default function ItemList() {
                     </p>
                     <div className="inferior-modal">
                         <div className="info">
-                            <p>ESTADO: {item[0].estado == 1 ? <MdDone /> : <MdWarning /> }</p>
+                            <p>ESTADO: {estadoConservacaoOk.includes(item[0].estado) ? <MdDone /> : <MdWarning /> }</p>
                             <p>LOCAL: {item[0].local}</p>
                             <p>NÚMERO DE CÓDIGOS DE BARRAS: {item[0].codBarras} </p>
                         </div>
@@ -116,7 +117,7 @@ export default function ItemList() {
                             <tr key={item.id}>
                                 <td>{item.id}</td>
                                 <td>{item.nome}</td>
-                                <td>{item.estado == 1 ? <MdDone color="green" size={25  }/>: <MdWarning color="red" size={25}/> }</td>
+                                <td>{estadoConservacaoOk.includes(item.estado) ? <MdDone color="green" size={25  }/>: <MdWarning color="red" size={25}/> }</td>
                                 <td>{item.local}</td>
                                 <td>{item.codBarras}</td>
                                 <td>
