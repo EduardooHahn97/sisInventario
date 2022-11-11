@@ -11,12 +11,23 @@ export default function ItemEdit(){
     const [item, setItem] = useState([])
     const [nome, setNome] = useState('')
     const [descricao, setDescricao] = useState('')
-    const [consevacao, setConversavacao] = useState('')
+    const [conservacao, setConversavacao] = useState('')
     const [imagem, setImagem] = useState('')
     const [local, setLocal] = useState('')
     const [codigoBarras, setCodBarra] = useState('')
+    const [idUsuario, setIdUsuario] = useState('')
 
-    let { id } = useParams();    
+    let { id } = useParams();
+    
+    const fetchCurrentUser = async(x) => {
+        const userInfo = localStorage.getItem("usuarioLogado");
+        const userData = JSON.parse(userInfo);
+        if(userData.id) {
+            setIdUsuario(userData.id);
+        }
+    }
+
+
     useEffect(() => {
         api.get('item?itemId='+id)
             .then(response => {
@@ -29,6 +40,7 @@ export default function ItemEdit(){
                 
                 setLocal(response.data[0].local)
             })
+            fetchCurrentUser();
     }, [])
 
     
@@ -41,22 +53,22 @@ export default function ItemEdit(){
             item = {
                 nome: nome,
                 descricao: descricao,
-                estadoConservacao: consevacao,
+                estadoConservacao: conservacao,
                 idLocal: local,
                 idItem: id,
                 codigoBarras, 
-                idUsuario: 1
+                idUsuario: idUsuario
             }
         }else{
             item = {
                 nome,
                 descricao,
-                estadoConservacao: consevacao,
+                estadoConservacao: conservacao,
                 imagem,
                 idLocal: local,
                 idItem: id,
                 codigoBarras,
-                idUsuario: 1
+                idUsuario: idUsuario
             }
         }
         api.put('item', item)
@@ -92,7 +104,7 @@ export default function ItemEdit(){
                     onChange={(e) => setDescricao(e.target.value)}
                 ></textarea>
 
-                <select placeholder="Estado de Conservação" value={consevacao} 
+                <select placeholder="Estado de Conservação" value={conservacao} 
                     onChange={(e) => setConversavacao(e.target.value)} >
                     <option value="" data-default disabled selected>Selecione o estado de Conservação</option>
                     <option>Bom</option>
