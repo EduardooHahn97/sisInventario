@@ -233,7 +233,7 @@ def emprestimoCreate(emprestimo: Emprestimo):
 
 
 @app.post("/api/importArquivo")
-def importArquivos(arq, tipoArquivo):
+def importArquivos(arq):
     #tipoArquivo 0 - arquivo de professor(varios locias) 
     #tipoArquivo 1 - arquivo de um local 
     print(arq)
