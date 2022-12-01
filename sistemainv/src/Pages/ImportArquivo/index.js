@@ -3,6 +3,7 @@ import Nav from '../../Components/NavBar'
 import api from '../../service/api'
 import { useState } from 'react'
 import Swal from 'sweetalert';
+import * as XLSX from 'xlsx';
 
 export default function ImportArquivo(){
 
@@ -16,44 +17,46 @@ export default function ImportArquivo(){
             toast:true
         })
         setArquivo('');
+        settipoArq(0);
     };
 
+    const onChange = (e) => {
+        const [file] = e.target.files;
+        const reader = new FileReader();
+    
+        reader.onload = (evt) => {
+          const bstr = evt.target.result;
+          const wb = XLSX.read(bstr, { type: "binary" });
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
+          setArquivo(data);
+        };
+        reader.readAsBinaryString(file);
+      };
+
     const handleSubmit = async (e) => {
-        /*const reader = require('xlsx')
-        // Reading our test file
-        const file = reader.readFile(arquivo)
-        let data = []
-        const sheets = file.SheetNames
-        for(let i = 0; i < sheets.length; i++)
-        {
-            const temp = reader.utils.sheet_to_json(
-                file.Sheets[file.SheetNames[i]])
-                temp.forEach((res) => {
-                data.push(res)
-            })
-        }
-        // Printing data
-        console.log(data)*/
-        
-        /*const dados = [{"arquivo":arquivo, "tipo": tipoArq}]; 
+        const dados = [{'tipo':tipoArq, 'arquivo': arquivo}];
+        console.log(dados);
         await api.post('importArquivo', dados)
         .then(successToast)
         .catch(err => {
             console.log(err)
-        })*/
+        })
     }
 
     console.log(arquivo);
     return(
         <div className='container-import-arquivo'>
             <Nav/>
-            <form className='form-import-arquivo' onSubmit={handleSubmit}>
+            {/*<form className='form-import-arquivo'>*/}
+            <div className='form-import-arquivo'>
                 <h1>Importar Arquivo</h1>
                 <input
                     type='file'
                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                    placeholder='Escolha o arquivo .CSV'
-                    onChange={(e) => setArquivo(e.target.value)}
+                    placeholder='Escolha o arquivo .XLSX'
+                    onChange={onChange}
                 />
                 <div>
                     <p>Selecione o tipo do Arquivo:</p>
@@ -62,8 +65,9 @@ export default function ImportArquivo(){
                     <input type="radio" id="sala" name="tipoArq" value="1" onClick={(e) => settipoArq(1)}/>
                     <label for="css">Sala</label>
                 </div>
-                <button>Confirmar</button>
-            </form>
+                <button onClick={handleSubmit}>Confirmar</button>
+            </div>
+            {/*</form>*/}
         </div>
     )
 }

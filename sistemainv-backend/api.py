@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
-from models.models import Item, User, ItemId, UserId, Login, Local, LocalId, Emprestimo
+from models.models import Item, User, ItemId, UserId, Login, Local, LocalId, Emprestimo, arquivo
 from datetime import datetime
 
 app = FastAPI()
@@ -244,10 +244,11 @@ def emprestimo_delete(EmprestimoId):
 
 
 @app.post("/api/importArquivo")
-def importArquivos(arq):
+def importArquivos(dados:arquivo):
     #tipoArquivo 0 - arquivo de professor(varios locias) 
     #tipoArquivo 1 - arquivo de um local 
-    print(arq)
+    print(dados)
+    tipoArquivo = 0 #dados['tipo']
     if (tipoArquivo == 0):
         '''colunas = ['idItem', 'prefixo', 'patrimonio', 'codBarras', 'controle', 'material', 'situacao', 'valor', 'nada', 'nada2']
 

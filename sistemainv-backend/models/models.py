@@ -61,3 +61,6 @@ class Emprestimo(BaseModel):
     idItem: int
     dataRetirada: datetime
     observacao: str
+
+class arquivo(BaseModel):
+    dados: Optional[str]
