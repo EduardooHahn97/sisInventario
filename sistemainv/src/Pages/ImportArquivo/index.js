@@ -36,7 +36,7 @@ export default function ImportArquivo(){
       };
 
     const handleSubmit = async (e) => {
-        const dados = [{'tipo':tipoArq, 'arquivo': arquivo}];
+        const dados = {'tipo':tipoArq, 'arquivo': arquivo};
         console.log(dados);
         await api.post('importArquivo', dados)
         .then(successToast)

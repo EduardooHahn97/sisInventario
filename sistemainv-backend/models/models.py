@@ -63,4 +63,5 @@ class Emprestimo(BaseModel):
     observacao: str
 
 class arquivo(BaseModel):
-    dados: Optional[str]
+    tipo: Optional[str]
+    arquivo: Optional[str]
