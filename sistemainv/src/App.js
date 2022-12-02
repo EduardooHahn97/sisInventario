@@ -21,33 +21,39 @@ import EmprestimoCreate from './Pages/EmprestimoCreate/index';
 import EmprestimoList from './Pages/EmprestimoList/index';
 
 import LocalHome from './Pages/LocalHome/index';
+import RelatorioInicio from './Pages/RelatorioInicia';
+
+import NotFound from './Pages/NotFound'
 
 function App() {
   return (
     <Router>
         <Routes>
-          <Route path="/" exeact element={<ItemList/>} />
+          <Route path="*" element={<NotFound />}/>
+          <Route path="/" exact element={<ItemList/>} />
           <Route path="/itemEdit/:id" element={<ItemEdit/>} />
           <Route path="/itemCreate" element={<ItemCreate/>} />
           
-          <Route path="/usuarioHome" exeact element={<UsuarioHome/>} />
-          <Route path="/usuarioList" exeact element={<UsuarioList/>} />
-          <Route path="/usuarioEdit/:userId" exeact element={<UsuarioEdit/>} />
-          <Route path="/UsuarioCreate" exeact element={<UsuarioCreate/>} />
+          <Route path="/usuarioHome"  element={<UsuarioHome/>} />
+          <Route path="/usuarioList" element={<UsuarioList/>} />
+          <Route path="/usuarioEdit/:userId"  element={<UsuarioEdit/>} />
+          <Route path="/UsuarioCreate" element={<UsuarioCreate/>} />
 
-          <Route path="/LocalList" exeact element={<LocalList/>} />
+          <Route path="/LocalList" element={<LocalList/>} />
+          <Route path="/LocalHome" element={<LocalHome/>} />
+          <Route path="/LocalEdit/:localId" element={<LocalEdit/>} />
+          <Route path="/LocalCreate"  element={<LocalCreate/>} />
           
-          <Route path="/LocalHome" exeact element={<LocalHome/>} />
-          <Route path="/LocalEdit/:localId" exeact element={<LocalEdit/>} />
-          <Route path="/LocalCreate" exeact element={<LocalCreate/>} />
           
           
-          <Route path="/emprestimoCreate" exeact element={<EmprestimoCreate/>} />
-          <Route path="/emprestimoList" exeact element={<EmprestimoList/>} />
+          <Route path="/emprestimoCreate" element={<EmprestimoCreate/>} />
+          <Route path="/emprestimoList"  element={<EmprestimoList/>} />
           
-          <Route path="/login" exeact element={<Login/>} />
-          <Route path="/ImportArquivo" exeact element={<ImportArquivo/>} />
-          <Route path="/BarCode" exeact element={<BarCode/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/ImportArquivo" element={<ImportArquivo/>} />
+          <Route path="/BarCode"  element={<BarCode/>} />
+
+          <Route path="/relatorioInicio" element={<RelatorioInicio />}/>
         </Routes>
     </Router>
   );
