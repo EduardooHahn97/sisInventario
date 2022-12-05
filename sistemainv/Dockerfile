@@ -1,12 +1,12 @@
-FROM node:alpine
+FROM node:18-alpine as build
 
-WORKDIR /usr/app
+COPY . /sistemainv
+WORKDIR /sistemainv
 
-COPY package*.json ./
-RUN npm install
+RUN npm install --force
+RUN npm run build --production
 
 COPY . .
 
-EXPOSE 3000
 
-CMD ["npm", "start"]
+

@@ -2,7 +2,7 @@ import './styles.css'
 import Nav from '../../Components/NavBar'
 import { useState, useEffect } from 'react'
 import api from '../../service/api';
-
+import notFound from '../../assets/notfound.svg'
 export default function UsuarioEdit(){
 
     const [locais, setLocais] = useState([]);
@@ -16,7 +16,9 @@ export default function UsuarioEdit(){
     return(
         <div className="container-local-list">
             <Nav />
-            <h1>Not found</h1>
+            <div className='img-not-found'>
+                <img src={notFound} />
+            </div>
         </div>
     )
 }

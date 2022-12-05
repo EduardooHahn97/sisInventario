@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import conexao
-from models.models import Item, User, ItemId, UserId, Login, Local, LocalId, Emprestimo, arquivo
+from models.models import Item, User, ItemId, UserId, Login, Local, LocalId, Emprestimo, arquivo, Conferencia
 from datetime import datetime
 
 app = FastAPI()
@@ -243,6 +243,24 @@ def emprestimo_delete(EmprestimoId):
     return True
 
 
+@app.post("/api/conferencia")
+def conferencia_create(conferencia: Conferencia):
+    print(conferencia)
+    conexao.banco.execute('select * from item where item.codigoBarras =' + conferencia.codigoBarras)
+    item = conexao.banco.fetchone()
+    print(item)
+    sql = 'insert into conferencia (idLocal, idItem, quantidade) values (%s, %s, %s)'
+    valores = (emprestimo.idUsuario,
+                emprestimo.idItem,
+                datetime.now(),
+                emprestimo.observacao)
+    conexao.banco.execute(sql, valores)
+
+    conexao.conn.commit()
+
+    print(conexao.banco.rowcount, "emprestimo inserido.")
+    return True
+
 @app.post("/api/importArquivo")
 def importArquivos(dados:arquivo):
     #tipoArquivo 0 - arquivo de professor(varios locias) 
@@ -321,3 +339,4 @@ def importArquivos(dados:arquivo):
         print(obj)   '''
     else:
         print("Tipo do arquivo nao identificado")
+
