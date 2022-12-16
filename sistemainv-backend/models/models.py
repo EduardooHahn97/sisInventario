@@ -65,3 +65,7 @@ class Emprestimo(BaseModel):
 class arquivo(BaseModel):
     tipo: Optional[str]
     arquivo: Optional[str]
+
+class Conferencia(BaseModel):
+    codigoBarras: str
+    idLocal: int

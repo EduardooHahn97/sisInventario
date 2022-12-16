@@ -3,7 +3,7 @@ import Nav from "../../Components/NavBar"
 import { MdAddCircle, MdOutlineRemoveRedEye, MdDeleteOutline, MdMode, MdDone, MdWarning, MdOutlineQrCode, MdQrCode } from 'react-icons/md'
 import './styles.css'
 import swal from 'sweetalert';
-import Modal from '@mui/material/modal';
+import {Modal} from '@mui/material';
 import { useEffect } from "react";
 import api from '../../service/api';
 import {Link} from 'react-router-dom';
