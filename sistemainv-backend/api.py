@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import conexao
 from models.models import Item, User, ItemId, UserId, Login, Local, LocalId, Emprestimo, arquivo
 from datetime import datetime
+import pandas as pd
+import numpy as np
+from io import StringIO ## for Python 3
 
 app = FastAPI()
 
@@ -247,63 +250,147 @@ def emprestimo_delete(EmprestimoId):
 def importArquivos(dados:arquivo):
     #tipoArquivo 0 - arquivo de professor(varios locias) 
     #tipoArquivo 1 - arquivo de um local 
-    print(dados)
-    tipoArquivo = 0 #dados['tipo']
-    if (tipoArquivo == 0):
-        '''colunas = ['idItem', 'prefixo', 'patrimonio', 'codBarras', 'controle', 'material', 'situacao', 'valor', 'nada', 'nada2']
+    #print(dados)
+    tipoArquivo = dados.tipo
+    StringArquivo = dados.arquivo
+    if (tipoArquivo == '0'):
+        colunas = ['idItem', 'prefixo', 'patrimonio', 'codBarras', 'controle', 'material', 'situacao', 'valor', 'nada', 'nada2', 'nada3']
 
-        arquivo = pd.read_excel('inv.xlsx',header = None, names=colunas)
+        #arquivo = pd.read_excel('inv.xlsx',header = None, names=colunas)
         
         obj = []
         local = 'teste'
+        csvArquivo = StringIO(StringArquivo)
+
+        arquivo = pd.read_csv(csvArquivo, sep=",", header = None, names=colunas)
         for i in range(len(arquivo)):
-            linha = arquivo.loc[i]
-            x = str(linha['material']).split('-')
+            x = str(arquivo['material'][i]).split('-')
             desc = ''
-            for i in range(len(x)-1):
-                desc = desc +'-' +x[i+1] 
+            for j in range(len(x)-1):
+                desc = desc +'-' +x[j+1] 
             
-            if(type(linha['idItem']) == str):
-                if 'Orgao:' in linha['idItem']:
-                    p = str(linha['idItem']).split('Orgao:')
+            print('tipo IDITEM:' , type(arquivo['idItem'][i]), 'ID: ', i)
+            if(type(arquivo['idItem'][i]) == str):
+                if 'Funcionario:' in arquivo['idItem'][i]:
+                    func = str(arquivo['idItem'][i]).split('Funcionario:')
+                    div = str(func[1]).split('-')
+                    nomeFunc = div[1]
+
+                if 'Orgao:' in arquivo['idItem'][i]:
+                    p = str(arquivo['idItem'][i]).split('Orgao:')
                     l = str(p[1]).split('Funcionario:')
                     
-                if 'Setor:' in linha['idItem'] and ('Edificac;ao:' in linha['idItem'] or 'Edificac,ao:' in linha['idItem'] ) and 'Ambiente:' in linha['idItem']:
-                    j = str(linha['idItem']).split('Setor:')
+                if 'Setor:' in arquivo['idItem'][i] and ('Edificac;ao:' in arquivo['idItem'][i] or 'Edificac,ao:' in arquivo['idItem'][i] ) and 'Ambiente:' in arquivo['idItem'][i]:
+                    j = str(arquivo['idItem'][i]).split('Setor:')
                     seto = str(j[1]).split('Edificac;ao:')
                     if len(seto) < 2:
                         seto = str(j[1]).split('Edificac,ao:')
                     setor = seto[0]
-                    e = str(linha['idItem']).split('Edificac;ao:')
+                    e = str(arquivo['idItem'][i]).split('Edificac;ao:')
                     if len(e) < 2:
-                        e = str(linha['idItem']).split('Edificac,ao:')
+                        e = str(arquivo['idItem'][i]).split('Edificac,ao:')
                     edifica = str(e[1]).split('Ambiente:')
                     edificacao = edifica[0]
-                    a = str(linha['idItem']).split('Ambiente:')
+                    a = str(arquivo['idItem'][i]).split('Ambiente:')
                     amb = a[1]
                     
                     local = setor + ' - ' +edificacao + ' - ' + amb  
-            
-            if(type(linha['idItem']) == int):
-                obj.append({'nome':x[0], 'descricao': desc,'codigoBarras': linha['codBarras'], 
-                        'local':local, 'valor':linha['valor'],'patrimonio':linha['patrimonio']})
+            print(arquivo['idItem'][i][0])
 
-        print(obj)'''
-    elif (tipoArquivo == 1):
-        #colunas
-        '''colunas = ['patrimonio', 'controle', 'codBarras', 'serie', 'descricao', 'conservacao', 'incorporacao', 'transferencia','nan', 'valor', 'situacao']
+            listaInteiros = ["0","1","2","3","4","5","6","7","8","9"]
 
-        arquivo = pd.read_excel('ivent.xlsx',header = None, names=colunas)
+            if (str(arquivo['idItem'][i][0]) in listaInteiros):
+                obj.append({'nome':x[0], 'descricao': desc,'codigoBarras': arquivo['codBarras'][i], 
+                        'local':local, 'valor':arquivo['valor'][i],'patrimonio':arquivo['patrimonio'][i]})
 
-        arquivo.pop('nan')
-        arquivo
+        print(obj)
+
+        for item in obj:
+            sql = 'select * from item where codigoBarras= ' + str(item['codigoBarras'])
+            conexao.banco.execute(sql)
+            itemBanco = conexao.banco.fetchone()
+            if itemBanco:
+                print("Item ja esta cadastrado: ", item['nome'])
+            else:
+                ix = item['local'].split(' - ')
+                #print(ix) 
+                campus = ix[2]
+                bloco = ix[1]
+                sala = ix[4]  
+                #print('c: ', campus, ' - ','b: ', bloco, ' - ','s: ', sala)
+                  
+                sql = "select * from local where sala='"+str(sala).strip()+"' and bloco='"+str(bloco).strip()+"'"
+                conexao.banco.execute(sql)
+                localItem = conexao.banco.fetchone()
+                #print("local busca BANCO:", localItem)
+                localBancoItem = 1
+                if localItem == None:
+                    sql = "insert into local (campus, bloco, sala) values (%s, %s, %s)"
+                    valores = (str(campus).strip(),
+                                str(bloco).strip(),
+                                str(sala).strip())    
+                        
+                        
+                        #'"+str(campus).strip()+"','"+str(bloco).strip()+"','"+str(sala).strip()+"')"
+                    conexao.banco.execute(sql, valores)
+                    conexao.conn.commit()
+                    print(conexao.banco.rowcount, "local inserido.")
+                else:
+                    #print("->", localItem[0])
+                    sql1 = "select * from usuario where nome = '"+str(nomeFunc).strip()+"'"
+                    print(sql1)
+                    conexao.banco.execute(sql1)
+                    idFunc = conexao.banco.fetchone()
+
+                    if idFunc == None:
+                        sql = 'insert into usuario (nome, email, senha, token) values (%s, %s, %s, %s)'
+                        #print(sql)
+                        valores = (str(nomeFunc).strip(),
+                                    str(nomeFunc).strip()+'@ufsc.com.br',
+                                    '123',
+                                    '123')
+                        #print(valores)
+                        conexao.banco.execute(sql, valores)
+                        conexao.conn.commit()
+                        print(conexao.banco.rowcount, "Item inserido.")
+
+
+
+                    sql = "select * from item where codigoBarras = "+item['codigoBarras']
+                    #print(sql)
+                    conexao.banco.execute(sql)
+                    itemBanco = conexao.banco.fetchone()
+                    #print("ITEM busca BANCO:", itemBanco)
+                    if itemBanco == None:
+                        sql = 'insert into item (nome, descricao, codigoBarras, idLocal, idUsuario) values (%s, %s, %s, %s, %s)'
+                        #print(sql)
+                        valores = (item['nome'],
+                                    item['descricao'],
+                                    item['codigoBarras'],
+                                    localItem[0], 
+                                    idFunc[0])
+                        #print(valores)
+                        conexao.banco.execute(sql, valores)
+                        conexao.conn.commit()
+                        print(conexao.banco.rowcount, "Item inserido.")
+
+    elif (tipoArquivo == '1'):
+        colunas = ['patrimonio', 'controle', 'codBarras', 'serie', 'descricao', 'conservacao', 'incorporacao', 'transferencia','nan', 'valor', 'situacao']
+
+        #arquivo = pd.read_excel('ivent.xlsx',header = None, names=colunas)
+
+        #arquivo.pop('nan')
         obj = []
         local = 'teste'
+        csvArquivo = StringIO(StringArquivo)
+
+        arquivo = pd.read_csv(csvArquivo, sep=",", header = None, names=colunas)
         for i in range(len(arquivo)):
-            linha = arquivo.loc[i]
-            if(type(linha['patrimonio']) == str):
-                if('Edificac;ao:' in linha['patrimonio'] or 'Edificac,ao:' in linha['patrimonio'] or 'Edificação:' in linha['patrimonio']):
-                    x = str(linha['patrimonio']).split('Edificação:')
+            #linha = arquivo.loc[i]
+            print('tipo PATRIMONIO:' , type(arquivo['patrimonio'][i]) )
+            if(type(arquivo['patrimonio'][i]) == str):
+                if('Edificac;ao:' in arquivo['patrimonio'][i] or 'Edificac,ao:' in arquivo['patrimonio'][i] or 'Edificação:' in arquivo['patrimonio'][i]):
+                    x = str(arquivo['patrimonio'][i]).split('Edificação:')
                     edificacao = str(x[1]).split('Setor:')
                     setor = str(y[1]).split('Ambiente:')
                     ambiente = str(z[1]).split('Situação:')
@@ -313,11 +400,41 @@ def importArquivos(dados:arquivo):
                 
             #['patrimonio', 'controle', 'codBarras', 'serie', 'descricao', 'conservacao', 
             #'incorporacao', 'transferencia','nan', 'valor', 'situacao']
-            if(type(linha['patrimonio']) == int):
-                x = str(linha['descricao']).split('-')
-                obj.append({'nome':x[0], 'descricao': linha['descricao'],'codigoBarras': linha['codBarras'], 
-                        'local':local, 'valor':linha['valor'],'patrimonio':linha['patrimonio']})
+            if(type(arquivo['patrimonio'][i]) == int):
+                x = str(arquivo['descricao'][i]).split('-')
+                obj.append({'nome':x[0], 'descricao': arquivo['descricao'][i],'codigoBarras': arquivo['codBarras'][i], 
+                        'local':local, 'valor':arquivo['valor'][i],'patrimonio':arquivo['patrimonio'][i]})
 
-        print(obj)   '''
+        print(obj) 
+
+        '''for item in obj:
+            conexao.banco.execute('select * from item where codigoBarras= ',str(item['codBarras']))
+            itemBanco = conexao.banco.fetchone()
+            if itemBanco:
+                print("Item ja esta cadastrado: ", item['nome'])
+            else:
+                ix = item.local.split(' - ')
+                isetor = x[0]
+                iedificacao = x[1]
+                iambiente = x[2]     
+                
+                conexao.banco.execute('select * from local where sala= ',iambiente,'and bloco= ',iedificacao)
+                localItem = conexao.banco.fetchone()
+                localBancoItem = 1
+                if localItem:
+                    localBancoItem = localItem['idLocal']
+
+                sql = 'insert into item (nome, descricao, codigoBarras, local, valor, patrimonio) values (%s, %s, %s, %s, %s, %s)'
+                valores = (item.nome,
+                            item.descricao,
+                            item.codigoBarras,
+                            localBancoItem,
+                            item.valor,
+                            item.patrimonio)
+                conexao.banco.execute(sql, valores)
+
+                conexao.conn.commit()
+
+                print(conexao.banco.rowcount, "Item inserido.")'''
     else:
         print("Tipo do arquivo nao identificado")

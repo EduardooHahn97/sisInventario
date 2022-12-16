@@ -7,15 +7,15 @@ export default function RelatorioInicio(){
     const [item, setItem] = useState(0);
     const [local, setLocal] = useState("");
 
-    useEffect(() => {
+    /*useEffect(() => {
         api.get('locais')
             .then(response => setLocais(response.data))
-    }, [])
+    }, [])*/
 
 
     return(
         <div className="container-local-list">
-            <Nav />
+            {/*<Nav />
             <h1>Locais Cadastrados</h1>
             <table className='table-local-list'>
                 <thead className='thead-local-list'>
@@ -39,7 +39,7 @@ export default function RelatorioInicio(){
                     ))}
                 </tbody>
 
-            </table>
+            </table>*/}
         </div>
     )
 }
