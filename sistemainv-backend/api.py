@@ -356,7 +356,7 @@ def importArquivos(dados:arquivo):
                 else:
                     #print("->", localItem[0])
                     sql1 = "select * from usuario where nome = '"+str(nomeFunc).strip()+"'"
-                    print(sql1)
+                    #print(sql1)
                     conexao.banco.execute(sql1)
                     idFunc = conexao.banco.fetchone()
 
@@ -364,13 +364,18 @@ def importArquivos(dados:arquivo):
                         sql = 'insert into usuario (nome, email, senha, token) values (%s, %s, %s, %s)'
                         #print(sql)
                         valores = (str(nomeFunc).strip(),
-                                    str(nomeFunc).strip()+'@ufsc.com.br',
+                                    str(nomeFunc).replace(" ", "")+'@ufsc.com.br',
                                     '123',
                                     '123')
                         #print(valores)
                         conexao.banco.execute(sql, valores)
                         conexao.conn.commit()
-                        print(conexao.banco.rowcount, "Item inserido.")
+                        print(conexao.banco.rowcount, "usuario inserido.")
+
+                        sql1 = "select * from usuario where nome = '"+str(nomeFunc).strip()+"'"
+                        #print(sql1)
+                        conexao.banco.execute(sql1)
+                        idFunc = conexao.banco.fetchone()
 
 
 
@@ -387,7 +392,7 @@ def importArquivos(dados:arquivo):
                                     item['codigoBarras'],
                                     localItem[0], 
                                     idFunc[0])
-                        #print(valores)
+                        print(valores)
                         conexao.banco.execute(sql, valores)
                         conexao.conn.commit()
                         print(conexao.banco.rowcount, "Item inserido.")
